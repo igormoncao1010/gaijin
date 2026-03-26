@@ -469,29 +469,17 @@
     }
 
     /* MODELO 3D - FIXO ABSOLUTO E INTERATIVO COM ZOOM */
-    #floating-3d {
-      position: fixed !important;
-      bottom: 20px !important;
-      right: 20px !important;
-      top: auto !important;
-      left: auto !important;
-      width: 620px;
-      height: 620px;
-      z-index: 9999 !important;
-      pointer-events: auto;
-      cursor: grab;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      outline: none;
-      margin: 0 !important;
-      padding: 0 !important;
-      transform: none !important;
-      overflow: visible !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      display: block !important;
-    }
+   #floating-3d {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 50vw;
+  height: 100vh;
+  z-index: 9999;
+  pointer-events: auto;
+  background: transparent;
+  cursor: grab;
+}
     
     #floating-3d canvas {
       width: 100% !important;
