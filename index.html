@@ -178,14 +178,14 @@
     }
 
     .hero-text {
-      flex: 1;
+      flex: 0.8;
       min-width: 300px;
     }
 
     .hero-3d {
-      flex: 1;
-      min-width: 350px;
-      height: 500px;
+      flex: 1.2;
+      min-width: 450px;
+      height: 550px;
       position: relative;
       pointer-events: auto;
     }
@@ -688,7 +688,14 @@
       .hero-title { font-size: 2.6rem; }
       .hero-desc { font-size: 1.1rem; }
       .hero { padding: 120px 0 80px 0; min-height: auto; }
-      .hero-3d { height: 380px; min-width: 280px; }
+      .hero-3d { 
+        height: 380px; 
+        min-width: 280px;
+        flex: 1;
+      }
+      .hero-text {
+        flex: 1;
+      }
       .hero-grid { flex-direction: column; text-align: center; }
       .hero-text { text-align: center; }
       .hero-desc { margin-left: auto; margin-right: auto; }
@@ -900,7 +907,8 @@
     scene.background = null;
     
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
-    camera.position.set(-1, 1.2, -4.5);
+    // Posição da câmera para vista frontal
+    camera.position.set(0, 1.2, 3.8);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -911,8 +919,7 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.autoRotate = false;
-    controls.autoRotateSpeed = 1.5;
+    controls.autoRotate = false;  // Desativado - modelo não gira automaticamente
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.target.set(0, 0.8, 0);
