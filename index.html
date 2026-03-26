@@ -468,26 +468,27 @@
       transform: translateY(0);
     }
 
-    /* MODELO 3D - DRAGÃO GRANDE E ESTÁTICO, TOTALMENTE VISÍVEL SEM CORTES */
-   #floating-3d {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 620px;
-  height: 620px;
-  z-index: 9999;
-  pointer-events: auto;
-  cursor: grab;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  outline: none;
-  
-  /* GARANTIA DE FIXAÇÃO */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform;
-}
+    /* MODELO 3D - TOTALMENTE FIXO NA TELA */
+    #floating-3d {
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+      top: auto !important;
+      left: auto !important;
+      width: 620px;
+      height: 620px;
+      z-index: 9999;
+      pointer-events: auto;
+      cursor: grab;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      outline: none;
+      transform: none !important;
+      will-change: auto;
+      margin: 0;
+      padding: 0;
+    }
     
     #floating-3d canvas {
       width: 100% !important;
@@ -507,8 +508,8 @@
       #floating-3d {
         width: 340px;
         height: 340px;
-        bottom: 15px;
-        right: 15px;
+        bottom: 15px !important;
+        right: 15px !important;
       }
       .menu-toggle { display: flex; }
       .nav-links {
@@ -533,8 +534,8 @@
       #floating-3d {
         width: 260px;
         height: 260px;
-        bottom: 10px;
-        right: 10px;
+        bottom: 10px !important;
+        right: 10px !important;
       }
     }
   </style>
@@ -697,7 +698,7 @@
   </div>
 </div>
 
-<!-- MODELO 3D - DRAGÃO GRANDE, ESTÁTICO, TOTALMENTE VISÍVEL -->
+<!-- MODELO 3D - TOTALMENTE FIXO NA TELA -->
 <div id="floating-3d"></div>
 
 <script type="importmap">
@@ -723,7 +724,6 @@
     const scene = new THREE.Scene();
     scene.background = null;
     
-    // Câmera mais distante para acomodar o dragão grande sem cortes
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camera.position.set(0, 0.4, 4.2);
     
@@ -732,16 +732,15 @@
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
     
-    // Controles orbitais - DRAGÃO PARADO (sem rotação automática)
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.autoRotate = false;        // TOTALMENTE PARADO
+    controls.autoRotate = false;
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.target.set(0, 0.2, 0);
     controls.update();
     
-    // Iluminação dramática para destacar o dragão
+    // Iluminação
     const ambientLight = new THREE.AmbientLight(0x404060);
     scene.add(ambientLight);
     
@@ -772,7 +771,6 @@
       (gltf) => {
         const model = gltf.scene;
         
-        // Animações internas do modelo (se houver)
         if (gltf.animations && gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(model);
           gltf.animations.forEach((clip) => {
@@ -781,7 +779,6 @@
           console.log('✅ Animações do dragão ativadas');
         }
         
-        // Ajustes de material para aspecto metálico/escamado
         model.traverse((node) => {
           if (node.isMesh) {
             node.material.roughness = 0.32;
@@ -790,22 +787,17 @@
           }
         });
         
-        // ESCALA AUMENTADA - DRAGÃO MAIOR E IMPONENTE, SEM CORTES
-        // Aumento de 0.38 para 0.85, garantindo visibilidade completa
         model.scale.set(0.85, 0.85, 0.85);
-        // Ajuste de posição para centralizar perfeitamente dentro do container
         model.position.set(0, -0.28, 0);
         model.rotation.y = -0.8;
         scene.add(model);
-        console.log('✅ Dragão 3D carregado com escala ampliada (0.85) - totalmente visível e estático');
+        console.log('✅ Dragão 3D carregado - totalmente fixo na tela');
       },
       undefined,
       (error) => {
-        console.error('❌ Erro ao carregar modelo dragão:', error);
-        // Fallback: um dragão geométrico estilizado caso o arquivo não seja encontrado
+        console.error('❌ Erro ao carregar modelo:', error);
         const group = new THREE.Group();
         
-        // Corpo
         const bodyGeo = new THREE.SphereGeometry(0.45, 32, 32);
         const bodyMat = new THREE.MeshStandardMaterial({ color: 0xaa8866, metalness: 0.7, roughness: 0.3 });
         const body = new THREE.Mesh(bodyGeo, bodyMat);
@@ -813,14 +805,12 @@
         body.position.set(0, 0, 0);
         group.add(body);
         
-        // Cabeça
         const headGeo = new THREE.SphereGeometry(0.38, 32, 32);
         const headMat = new THREE.MeshStandardMaterial({ color: 0xccaa77, metalness: 0.65 });
         const head = new THREE.Mesh(headGeo, headMat);
         head.position.set(0, 0.25, 0.85);
         group.add(head);
         
-        // Chifres
         const hornGeo = new THREE.ConeGeometry(0.12, 0.45, 8);
         const hornMat = new THREE.MeshStandardMaterial({ color: 0xaa8866, metalness: 0.8 });
         const hornL = new THREE.Mesh(hornGeo, hornMat);
@@ -835,7 +825,6 @@
         hornR.rotation.x = -0.3;
         group.add(hornR);
         
-        // Asas estilizadas
         const wingGeo = new THREE.BoxGeometry(0.6, 0.08, 0.4);
         const wingMat = new THREE.MeshStandardMaterial({ color: 0x885544, metalness: 0.5 });
         const wingLeft = new THREE.Mesh(wingGeo, wingMat);
@@ -853,7 +842,7 @@
         group.scale.set(0.85, 0.85, 0.85);
         group.position.set(0, -0.3, 0);
         scene.add(group);
-        console.log('✅ Dragão substituto (geométrico) carregado em tamanho grande');
+        console.log('✅ Dragão substituto carregado - totalmente fixo');
       }
     );
     
@@ -862,12 +851,8 @@
     function animate() {
       requestAnimationFrame(animate);
       const delta = clock.getDelta();
-      
       if (mixer) mixer.update(delta);
-      
-      // SEM ROTAÇÃO AUTOMÁTICA - o dragão fica parado, apenas responde ao arrasto do usuário
       controls.update();
-      
       renderer.render(scene, camera);
     }
     animate();
@@ -885,7 +870,7 @@
     initThree();
   }
   
-  // ========== Funcionalidades interativas do site ==========
+  // Funcionalidades do site
   let coffee = 4328;
   const coffeeEl = document.getElementById('coffeeCount');
   setInterval(() => { 
