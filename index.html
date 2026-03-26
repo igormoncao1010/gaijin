@@ -142,7 +142,6 @@
       filter: grayscale(100%) brightness(0.6) contrast(1.2);
     }
 
-    /* LAYOT PRINCIPAL - SEM ALTURA FIXA NO 3D */
     .hero-layout {
       position: relative;
       z-index: 2;
@@ -158,10 +157,10 @@
       min-width: 280px;
     }
 
-    /* CONTAINER 3D - SEM ALTURA FIXA, APENAS ESPAÇO NECESSÁRIO */
+    /* CONTAINER 3D - REDUZIDO EM 50% */
     .hero-3d-container {
-      flex: 1;
-      min-width: 400px;
+      flex: 0.5;
+      min-width: 200px;
       position: relative;
       display: flex;
       justify-content: center;
@@ -171,7 +170,7 @@
     .hero-3d {
       width: 100%;
       aspect-ratio: 1 / 1;
-      max-width: 500px;
+      max-width: 250px;
       margin: 0 auto;
       position: relative;
       pointer-events: auto;
@@ -530,8 +529,13 @@
       .hero-layout { flex-direction: column; text-align: center; }
       .hero-text { text-align: center; }
       .hero-desc { margin-left: auto; margin-right: auto; }
-      .hero-3d-container { min-width: 280px; }
-      .hero-3d { max-width: 350px; }
+      .hero-3d-container { 
+        flex: 1;
+        min-width: 180px;
+      }
+      .hero-3d { 
+        max-width: 200px;
+      }
       .menu-toggle { display: flex; }
       .nav-links {
         display: none;
@@ -552,7 +556,7 @@
 
     @media (max-width: 480px) {
       .hero-title { font-size: 2rem; }
-      .hero-3d { max-width: 280px; }
+      .hero-3d { max-width: 160px; }
     }
   </style>
 </head>
@@ -742,8 +746,9 @@
     const scene = new THREE.Scene();
     scene.background = null;
     
+    // Câmera ajustada para modelo menor
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
-    camera.position.set(0, 1.0, 3.0);
+    camera.position.set(0, 0.8, 2.5);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -756,7 +761,7 @@
     controls.autoRotateSpeed = 1.2;
     controls.enableZoom = false;
     controls.enablePan = false;
-    controls.target.set(0, 0.6, 0);
+    controls.target.set(0, 0.5, 0);
     
     const ambientLight = new THREE.AmbientLight(0x404060);
     scene.add(ambientLight);
@@ -795,18 +800,19 @@
           }
         });
         
-        model.scale.set(0.85, 0.85, 0.85);
-        model.position.set(0, -0.2, 0);
+        // REDUZIDO EM 50% - scale de 0.85 para 0.45
+        model.scale.set(0.45, 0.45, 0.45);
+        model.position.set(0, -0.15, 0);
         scene.add(model);
-        console.log('✅ Modelo carregado - sem container visível');
+        console.log('✅ Modelo carregado - tamanho reduzido em 50%');
       },
       undefined,
       (error) => {
         console.error('❌ Erro:', error);
-        const geometry = new THREE.IcosahedronGeometry(0.7, 0);
+        const geometry = new THREE.IcosahedronGeometry(0.4, 0);
         const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7 });
         const fallback = new THREE.Mesh(geometry, material);
-        fallback.position.set(0, 0.3, 0);
+        fallback.position.set(0, 0.2, 0);
         scene.add(fallback);
       }
     );
