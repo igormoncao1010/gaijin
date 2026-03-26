@@ -1,0 +1,14 @@
+{
+  "name": "gaijin-creative",
+  "version": "1.0.0",
+  "description": "Gaijin Creative - Identidade visual e criação de sites com precisão",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 5500",
+    "dev": "python3 -m http.server 5500",
+    "preview": "python3 -m http.server 8080"
+  },
+  "keywords": ["web", "design", "creative", "threejs"],
+  "author": "Gaijin Creative",
+  "license": "MIT"
+}
