@@ -900,7 +900,7 @@
     scene.background = null;
     
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
-    camera.position.set(-1, 1.2, 3.5);
+    camera.position.set(-2, 1.2, -6);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -911,7 +911,7 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.autoRotate = true;
+    controls.autoRotate = false;
     controls.autoRotateSpeed = 1.5;
     controls.enableZoom = false;
     controls.enablePan = false;
