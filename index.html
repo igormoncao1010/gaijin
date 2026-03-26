@@ -468,7 +468,7 @@
       transform: translateY(0);
     }
 
-    /* MODELO 3D - FIXO ABSOLUTO */
+    /* MODELO 3D - FIXO ABSOLUTO E INTERATIVO COM ZOOM */
     #floating-3d {
       position: fixed !important;
       bottom: 20px !important;
@@ -704,7 +704,7 @@
   </div>
 </div>
 
-<!-- MODELO 3D - TOTALMENTE FIXO NA TELA -->
+<!-- MODELO 3D - TOTALMENTE FIXO COM ZOOM ATIVADO -->
 <div id="floating-3d"></div>
 
 <script type="importmap">
@@ -723,12 +723,16 @@
 
   const container = document.getElementById('floating-3d');
   
-  // Garantir que o container esteja fixo antes de inicializar
+  // FORÇAR POSIÇÃO FIXA VIA JAVASCRIPT
   if (container) {
     container.style.position = 'fixed';
     container.style.bottom = '20px';
     container.style.right = '20px';
+    container.style.top = 'auto';
+    container.style.left = 'auto';
     container.style.zIndex = '9999';
+    container.style.margin = '0';
+    container.style.padding = '0';
   }
   
   function initThree() {
@@ -744,13 +748,20 @@
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
+    
+    // Limpar qualquer canvas existente
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
     container.appendChild(renderer.domElement);
     
+    // CONTROLES COM ZOOM ATIVADO
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.autoRotate = false;
-    controls.enableZoom = false;
+    controls.enableZoom = true;        // ZOOM ATIVADO - aumenta/diminui o modelo
     controls.enablePan = false;
+    controls.zoomSpeed = 1.2;
     controls.target.set(0, 0.2, 0);
     controls.update();
     
@@ -805,7 +816,7 @@
         model.position.set(0, -0.28, 0);
         model.rotation.y = -0.8;
         scene.add(model);
-        console.log('✅ Dragão 3D carregado - TOTALMENTE FIXO NA TELA');
+        console.log('✅ Dragão 3D carregado - TOTALMENTE FIXO NA TELA | ZOOM ATIVADO');
       },
       undefined,
       (error) => {
@@ -856,7 +867,7 @@
         group.scale.set(0.85, 0.85, 0.85);
         group.position.set(0, -0.3, 0);
         scene.add(group);
-        console.log('✅ Dragão substituto carregado - TOTALMENTE FIXO');
+        console.log('✅ Dragão substituto carregado - TOTALMENTE FIXO | ZOOM ATIVADO');
       }
     );
     
