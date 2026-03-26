@@ -469,20 +469,25 @@
     }
 
     /* MODELO 3D - DRAGÃO GRANDE E ESTÁTICO, TOTALMENTE VISÍVEL SEM CORTES */
-    #floating-3d {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 620px;
-      height: 620px;
-      z-index: 9999;
-      pointer-events: auto;
-      cursor: grab;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      outline: none;
-    }
+   #floating-3d {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 620px;
+  height: 620px;
+  z-index: 9999;
+  pointer-events: auto;
+  cursor: grab;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  
+  /* GARANTIA DE FIXAÇÃO */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
     
     #floating-3d canvas {
       width: 100% !important;
