@@ -32,6 +32,8 @@
       max-width: 1280px;
       margin: 0 auto;
       padding: 0 32px;
+      position: relative;
+      z-index: 5;
     }
 
     .header {
@@ -142,49 +144,10 @@
       filter: grayscale(100%) brightness(0.6) contrast(1.2);
     }
 
-    .hero-layout {
+    .hero-content {
       position: relative;
       z-index: 2;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
-    }
-
-    .hero-text {
-      flex: 1;
-      min-width: 280px;
-    }
-
-    /* CONTAINER 3D - SEM ALTURA FIXA, SEM CORTES */
-    .hero-3d-container {
-      flex: 0.6;
-      min-width: 320px;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: visible;
-    }
-    
-    .hero-3d {
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
-      position: relative;
-      pointer-events: auto;
-      background: transparent;
-      overflow: visible;
-    }
-    
-    .hero-3d canvas {
-      width: 100% !important;
-      height: auto !important;
-      outline: none;
-      display: block;
-      background: transparent !important;
-      overflow: visible;
+      max-width: 780px;
     }
 
     .hero-title {
@@ -206,7 +169,7 @@
       font-size: 1.35rem;
       color: #cccccc;
       margin-bottom: 40px;
-      max-width: 540px;
+      max-width: 640px;
       text-shadow: 0 1px 5px rgba(0,0,0,0.5);
     }
 
@@ -231,6 +194,8 @@
       padding: 80px 0;
       border-bottom: 1px solid #1f1f1f;
       background-color: #000000;
+      position: relative;
+      z-index: 5;
     }
 
     .about-video-section {
@@ -310,17 +275,6 @@
       padding-left: 32px;
     }
 
-    .values-list li {
-      margin-bottom: 28px;
-    }
-
-    .values-list strong {
-      font-weight: 500;
-      display: block;
-      margin-bottom: 6px;
-      color: #ffffff;
-    }
-
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -336,12 +290,6 @@
     .service-card:hover {
       transform: translateY(-5px);
       border-top-color: #ffffff;
-    }
-
-    .service-card h3 {
-      font-size: 1.65rem;
-      font-weight: 450;
-      margin-bottom: 16px;
     }
 
     .projects-grid {
@@ -465,12 +413,8 @@
       color: #6a6a6a;
       font-size: 0.8rem;
       border-top: 1px solid #1a1a1a;
-    }
-
-    .footer-logo-img {
-      height: 56px;
-      width: auto;
-      filter: grayscale(100%) brightness(1);
+      position: relative;
+      z-index: 5;
     }
 
     .modal {
@@ -524,21 +468,45 @@
       transform: translateY(0);
     }
 
+    /* MODELO 3D ABSOLUTO - FLUTUANDO SOBRE TUDO */
+    #floating-3d {
+      position: fixed;
+      top: 50%;
+      right: 5%;
+      transform: translateY(-50%);
+      width: 380px;
+      height: 380px;
+      z-index: 9999;
+      pointer-events: auto;
+      cursor: grab;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      outline: none;
+    }
+    
+    #floating-3d canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      background: transparent !important;
+      border: none !important;
+      outline: none !important;
+    }
+    
     @media (max-width: 780px) {
       .container { padding: 0 24px; }
       .hero-title { font-size: 2.6rem; }
-      .hero { padding: 120px 0 80px 0; min-height: auto; overflow: visible; }
-      .hero-layout { flex-direction: column; text-align: center; }
-      .hero-text { text-align: center; }
-      .hero-desc { margin-left: auto; margin-right: auto; }
-      .hero-3d-container { 
-        flex: 1;
-        min-width: 280px;
-        overflow: visible;
-      }
-      .hero-3d { 
-        max-width: 320px;
-        overflow: visible;
+      .hero { padding: 120px 0 80px 0; min-height: auto; }
+      .hero-content { text-align: center; max-width: 100%; }
+      .hero-desc { margin: 0 auto 40px auto; }
+      #floating-3d {
+        width: 260px;
+        height: 260px;
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        transform: none;
       }
       .menu-toggle { display: flex; }
       .nav-links {
@@ -560,8 +528,12 @@
 
     @media (max-width: 480px) {
       .hero-title { font-size: 2rem; }
-      .hero-3d { max-width: 260px; }
-      .hero-3d-container { min-width: 240px; }
+      #floating-3d {
+        width: 200px;
+        height: 200px;
+        bottom: 10px;
+        right: 10px;
+      }
     }
   </style>
 </head>
@@ -597,16 +569,11 @@
       </video>
     </div>
     <div class="container">
-      <div class="hero-layout">
-        <div class="hero-text fade-up visible">
-          <h1 class="hero-title">Identidade visual &<br> 
-          <strong>criação de sites</strong> com precisão.</h1>
-          <p class="hero-desc">Gaijin Creative — criamos experiências visuais únicas e soluções digitais sob medida. Cada projeto nasce da sua essência e ganha vida através do design estratégico.</p>
-          <button class="btn-outline" id="openModalBtn">Iniciar projeto →</button>
-        </div>
-        <div class="hero-3d-container">
-          <div class="hero-3d" id="threeCanvasContainer"></div>
-        </div>
+      <div class="hero-content fade-up visible">
+        <h1 class="hero-title">Identidade visual &<br> 
+        <strong>criação de sites</strong> com precisão.</h1>
+        <p class="hero-desc">Gaijin Creative — criamos experiências visuais únicas e soluções digitais sob medida. Cada projeto nasce da sua essência e ganha vida através do design estratégico.</p>
+        <button class="btn-outline" id="openModalBtn">Iniciar projeto →</button>
       </div>
     </div>
   </div>
@@ -728,6 +695,9 @@
   </div>
 </div>
 
+<!-- MODELO 3D FLUTUANTE ABSOLUTO - SEM CONTAINER VISÍVEL -->
+<div id="floating-3d"></div>
+
 <script type="importmap">
   {
     "imports": {
@@ -742,27 +712,21 @@
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-  const container = document.getElementById('threeCanvasContainer');
+  const container = document.getElementById('floating-3d');
   
   function initThree() {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    
     const scene = new THREE.Scene();
     scene.background = null;
     
-    // Câmera com proporção ajustável
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 1000);
-    camera.position.set(0, 0.75, 2.3);
+    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+    camera.position.set(0, 0.7, 2.4);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    
-    function updateSize() {
-      const width = container.clientWidth;
-      const height = width; // Mantém proporção quadrada
-      renderer.setSize(width, height);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    }
-    
-    updateSize();
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
     
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -814,15 +778,14 @@
           }
         });
         
-        // Ajuste fino do tamanho e posição
-        model.scale.set(0.52, 0.52, 0.52);
-        model.position.set(0, -0.22, 0);
+        model.scale.set(0.55, 0.55, 0.55);
+        model.position.set(0, -0.2, 0);
         scene.add(model);
-        console.log('✅ Modelo carregado - ajustado para não cortar');
+        console.log('✅ Modelo 3D flutuante carregado - sem cortes');
       },
       undefined,
       (error) => {
-        console.error('❌ Erro:', error);
+        console.error('❌ Erro ao carregar modelo:', error);
         const geometry = new THREE.IcosahedronGeometry(0.45, 0);
         const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7 });
         const fallback = new THREE.Mesh(geometry, material);
@@ -843,13 +806,16 @@
     animate();
     
     window.addEventListener('resize', () => {
-      updateSize();
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newWidth, newHeight);
     });
   }
   
   if (container) {
-    // Pequeno delay para garantir que o container tenha dimensões
-    setTimeout(() => initThree(), 100);
+    initThree();
   }
   
   // Funcionalidades
