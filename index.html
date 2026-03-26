@@ -468,14 +468,13 @@
       transform: translateY(0);
     }
 
-    /* MODELO 3D ABSOLUTO - AJUSTADO SEM CORTES */
+    /* MODELO 3D ABSOLUTO - FLUTUANTE PARADO (SEM MOVIMENTO) */
     #floating-3d {
       position: fixed;
-      top: 55%;
-      right: 3%;
-      transform: translateY(-50%);
-      width: 320px;
-      height: 320px;
+      bottom: 40px;
+      right: 40px;
+      width: 480px;
+      height: 480px;
       z-index: 9999;
       pointer-events: auto;
       cursor: grab;
@@ -501,12 +500,10 @@
       .hero-content { text-align: center; max-width: 100%; }
       .hero-desc { margin: 0 auto 40px auto; }
       #floating-3d {
-        width: 220px;
-        height: 220px;
-        top: auto;
+        width: 260px;
+        height: 260px;
         bottom: 20px;
         right: 20px;
-        transform: none;
       }
       .menu-toggle { display: flex; }
       .nav-links {
@@ -529,8 +526,8 @@
     @media (max-width: 480px) {
       .hero-title { font-size: 2rem; }
       #floating-3d {
-        width: 170px;
-        height: 170px;
+        width: 200px;
+        height: 200px;
         bottom: 10px;
         right: 10px;
       }
@@ -695,7 +692,7 @@
   </div>
 </div>
 
-<!-- MODELO 3D FLUTUANTE -->
+<!-- MODELO 3D FLUTUANTE ABSOLUTO - PARADO (SEM ROTAÇÃO AUTOMÁTICA) -->
 <div id="floating-3d"></div>
 
 <script type="importmap">
@@ -722,21 +719,23 @@
     scene.background = null;
     
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0.6, 2.2);
+    camera.position.set(0, 0.5, 3.5);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
     
+    // Controles orbitais: permitem interação manual (arrastar) mas SEM rotação automática
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.autoRotate = false;
-    controls.enableZoom = false;
-    controls.enablePan = false;
+    controls.enableDamping = true;      // suavidade ao interagir
+    controls.autoRotate = false;        // PARADO: sem rotação automática
+    controls.enableZoom = false;        // zoom desabilitado para manter enquadramento
+    controls.enablePan = false;         // sem movimento de pan
     controls.target.set(0, 0.35, 0);
+    controls.update();
     
-    // Iluminação
+    // Iluminação suave para destacar o modelo
     const ambientLight = new THREE.AmbientLight(0x404060);
     scene.add(ambientLight);
     
@@ -749,47 +748,54 @@
     scene.add(fillLight);
     
     const backLight = new THREE.PointLight(0xaa8866, 0.5);
-    backLight.position.set(-1, 1.0, -1.8);
+    backLight.position.set(-1, 1.2, -1.8);
     scene.add(backLight);
     
     const rimLight = new THREE.PointLight(0xccaa88, 0.7);
-    rimLight.position.set(1.2, 1.1, -1.8);
+    rimLight.position.set(1.2, 1.3, -1.8);
     scene.add(rimLight);
     
     const loader = new GLTFLoader();
     let mixer = null;
+    let modelLoaded = false;
     
     loader.load('robo.glb', 
       (gltf) => {
         const model = gltf.scene;
         
+        // Animações são executadas (caso existam) mas sem movimento de câmera
         if (gltf.animations && gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(model);
           gltf.animations.forEach((clip) => {
             mixer.clipAction(clip).play();
           });
-          console.log('✅ Animações ativadas');
+          console.log('✅ Animações do modelo ativadas (movimento interno do robô)');
         }
         
+        // Ajustes de material para um visual metálico e clean
         model.traverse((node) => {
           if (node.isMesh) {
-            node.material.roughness = 0.3;
-            node.material.metalness = 0.7;
+            node.material.roughness = 0.35;
+            node.material.metalness = 0.68;
+            if (node.material.color) node.material.color.multiplyScalar(1.05);
           }
         });
         
-        model.scale.set(0.48, 0.48, 0.48);
-        model.position.set(0, -0.18, 0);
+        // Escala e posição para ficar centralizado e estático
+        model.scale.set(0.38, 0.38, 0.38);
+        model.position.set(0, -0.12, 0);
         scene.add(model);
-        console.log('✅ Modelo 3D carregado - sem cortes');
+        modelLoaded = true;
+        console.log('✅ Modelo 3D carregado - modo estático (sem auto-rotação)');
       },
       undefined,
       (error) => {
-        console.error('❌ Erro:', error);
-        const geometry = new THREE.IcosahedronGeometry(0.4, 0);
-        const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7 });
+        console.error('❌ Erro ao carregar modelo:', error);
+        // Fallback geométrico caso o arquivo não seja encontrado
+        const geometry = new THREE.IcosahedronGeometry(0.55, 0);
+        const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.7, roughness: 0.3 });
         const fallback = new THREE.Mesh(geometry, material);
-        fallback.position.set(0, 0.15, 0);
+        fallback.position.set(0, 0.1, 0);
         scene.add(fallback);
       }
     );
@@ -799,12 +805,18 @@
     function animate() {
       requestAnimationFrame(animate);
       const delta = clock.getDelta();
+      
+      // Atualiza animações internas do modelo (caso existam) para manter movimento orgânico
       if (mixer) mixer.update(delta);
+      
+      // Controles manuais: sem auto-rotação, apenas atualiza damping para interação suave
       controls.update();
+      
       renderer.render(scene, camera);
     }
     animate();
     
+    // Ajuste responsivo do canvas
     window.addEventListener('resize', () => {
       const newWidth = container.clientWidth;
       const newHeight = container.clientHeight;
@@ -818,14 +830,20 @@
     initThree();
   }
   
-  // Funcionalidades
+  // ========== Funcionalidades do site (sem interferência no 3D) ==========
   let coffee = 4328;
   const coffeeEl = document.getElementById('coffeeCount');
-  setInterval(() => { coffee += Math.floor(Math.random() * 3) + 2; if(coffeeEl) coffeeEl.textContent = coffee; }, 86400000);
+  setInterval(() => { 
+    coffee += Math.floor(Math.random() * 3) + 2; 
+    if(coffeeEl) coffeeEl.textContent = coffee; 
+  }, 86400000);
   
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
-  menuToggle?.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+  menuToggle?.addEventListener('click', () => { 
+    menuToggle.classList.toggle('active'); 
+    navLinks.classList.toggle('active'); 
+  });
   
   const modal = document.getElementById('modal');
   const closeModal = document.getElementById('closeModal');
@@ -839,7 +857,7 @@
     const nome = document.getElementById('nome')?.value;
     const tipo = document.getElementById('tipo')?.value;
     const detalhes = document.getElementById('detalhes')?.value;
-    if(!nome || !tipo || !detalhes) { alert('Preencha os campos'); return; }
+    if(!nome || !tipo || !detalhes) { alert('Preencha os campos obrigatórios'); return; }
     window.open(`https://wa.me/5561996067198?text=*Projeto*%0A%0ANome: ${nome}%0ATipo: ${tipo}%0ADetalhes: ${detalhes}`, '_blank');
     modal.classList.remove('active');
     form.reset();
@@ -848,7 +866,9 @@
   const header = document.querySelector('.header');
   window.addEventListener('scroll', () => { header.classList.toggle('scrolled', window.scrollY > 50); });
   
-  const observer = new IntersectionObserver((entries) => { entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')); }, { threshold: 0.1 });
+  const observer = new IntersectionObserver((entries) => { 
+    entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')); 
+  }, { threshold: 0.1 });
   document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up').forEach(el => observer.observe(el));
 </script>
 </body>
