@@ -1042,7 +1042,7 @@
     initHeroThree();
   }
   
-   // ==================== SEGUNDO MODELO 3D (CONTATO) ====================
+  // ==================== SEGUNDO MODELO 3D (CONTATO) ====================
   const contactContainer = document.getElementById('contactThreeCanvas');
   
   function initContactThree() {
@@ -1112,14 +1112,18 @@
           if (node.isMesh) {
             node.material.roughness = 0.4;
             node.material.metalness = 0.2;
-            // Se quiser que o dino fique com cores normais, remova o grayscale
-            // node.material.color.multiplyScalar(1);
           }
         });
         
-        // Ajustar escala e posição conforme necessário
-        model.scale.set(1.0, 1.0, 1.0); // Ajuste aqui se o dino estiver muito grande/pequeno
+        // Ajustar escala
+        model.scale.set(1.0, 1.0, 1.0);
+        
+        // Ajustar posição
         model.position.set(0, -4, -6);
+        
+        // 👇 ROTAÇÃO ADICIONADA AQUI 👇
+        model.rotation.y = Math.PI / 2;  // 90 graus - vira o dino de lado
+        
         scene.add(model);
       },
       (xhr) => {
