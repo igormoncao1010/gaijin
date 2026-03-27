@@ -1066,7 +1066,7 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
-    controls.autoRotate = true;
+    controls.autoRotate = false;
     controls.autoRotateSpeed = 1.2;
     controls.enableZoom = false;
     controls.enablePan = false;
@@ -1118,7 +1118,7 @@
         });
         
         // Ajustar escala e posição conforme necessário
-        model.scale.set(1.0, 1.0, 1.0); // Ajuste aqui se o dino estiver muito grande/pequeno
+        model.scale.set(1.0, 1.0, 6.0); // Ajuste aqui se o dino estiver muito grande/pequeno
         model.position.set(0, -0.5, 0);
         scene.add(model);
       },
