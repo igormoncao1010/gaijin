@@ -725,93 +725,7 @@
 
 
 
-  .premium-contact {
-  display: flex;
-  justify-content: space-between;
-  gap: 80px;
-  align-items: center;
-}
-
-.contact-headline {
-  font-size: 2rem;
-  font-weight: 450;
-  margin-bottom: 16px;
-  letter-spacing: -0.02em;
-}
-
-.contact-headline strong {
-  font-weight: 600;
-  border-bottom: 2px solid #fff;
-}
-
-.contact-sub {
-  font-size: 1.1rem;
-  color: #bbbbbb;
-  margin-bottom: 32px;
-  max-width: 480px;
-}
-
-.premium-btn {
-  margin-top: 32px;
-  padding: 14px 40px;
-  font-size: 1rem;
-  border: 1px solid #fff;
-  transition: all 0.3s ease;
-}
-
-.premium-btn:hover {
-  background: #fff;
-  color: #000;
-  transform: translateY(-2px);
-}
-
-/* lado direito */
-.contact-side {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.contact-box {
-  border: 1px solid #2a2a2a;
-  padding: 20px 24px;
-  background: #0a0a0a;
-  transition: all 0.3s ease;
-}
-
-.contact-box span {
-  display: block;
-  font-size: 0.8rem;
-  color: #888;
-  margin-bottom: 6px;
-}
-
-.contact-box strong {
-  font-size: 1rem;
-  color: #fff;
-}
-
-.contact-box:hover {
-  border-color: #fff;
-  transform: translateX(6px);
-}
-
-/* responsivo */
-@media (max-width: 780px) {
-  .premium-contact {
-    flex-direction: column;
-    gap: 40px;
-    text-align: center;
-  }
-
-  .contact-side {
-    width: 100%;
-  }
-
-  .contact-box:hover {
-    transform: none;
-  }
-} 
+   
   </style>
 </head>
 <body>
@@ -934,50 +848,25 @@
   </div>
 
   <section id="contact">
-  <div class="container">
-    <h2 class="section-title fade-up">Vamos transformar sua ideia</h2>
-
-    <div class="contact-wrapper premium-contact">
-
-      <div class="contact-info fade-left">
-        <p class="contact-headline">
-          Pronto para criar algo <strong>único</strong>?
-        </p>
-
-        <p class="contact-sub">
-          Conte sua ideia — nós transformamos em uma experiência visual de alto nível.
-        </p>
-
-        <div class="contact-detail">
-          <a href="https://wa.me/5561996067198" target="_blank">(61) 99606-7198</a><br>
-          <a href="mailto:hello@gaijincreative.com">hello@gaijincreative.com</a>
-        </div>
-
-        <button class="btn-outline premium-btn" id="openModalBtn2">
-          Solicitar orçamento →
-        </button>
-      </div>
-
-      <div class="contact-side fade-right">
-        <div class="contact-box">
-          <span>Resposta rápida</span>
-          <strong>até 24h</strong>
-        </div>
-
-        <div class="contact-box">
-          <span>Projetos personalizados</span>
-          <strong>100% sob medida</strong>
-        </div>
-
-        <div class="contact-box">
-          <span>Atendimento direto</span>
-          <strong>sem intermediários</strong>
-        </div>
-      </div>
-
+    <div class="container">
+      <h2 class="section-title fade-up">Vamos transformar sua ideia</h2>
+     <div class="contact-wrapper">
+  <div class="contact-info fade-left">
+    <p>Conte o que você precisa. Criamos soluções sob medida para o seu negócio.</p>
+    
+    <div class="contact-detail">
+      <a href="https://wa.me/5561996067198" target="_blank">(61) 99606-7198</a><br>
+      <a href="mailto:hello@gaijincreative.com">hello@gaijincreative.com</a>
     </div>
+
+    <!-- 👇 botão agora abaixo do email -->
+    <button class="btn-outline" id="openModalBtn2" style="margin-top: 24px;">
+      Solicitar orçamento →
+    </button>
   </div>
-</section>
+</div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
