@@ -1099,9 +1099,9 @@
         const model = gltf.scene;
         
         // Verificar e aplicar animações se existirem
-        if (gltf.animations.length > 1) {
+        if (gltf.animations.length > 0) {
           mixer = new THREE.AnimationMixer(model);
-          const action = mixer.clipAction(gltf.animations[0]);
+          const action = mixer.clipAction(gltf.animations[1]);
           action.play();
           action.timeScale = 1.2;
           console.log('🎬 Animação do Dino reproduzindo');
