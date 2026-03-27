@@ -1099,7 +1099,7 @@
         const model = gltf.scene;
         
         // Verificar e aplicar animações se existirem
-        if (gltf.animations.length > 0) {
+        if (gltf.animations.length > 1) {
           mixer = new THREE.AnimationMixer(model);
           const action = mixer.clipAction(gltf.animations[0]);
           action.play();
