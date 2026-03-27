@@ -960,6 +960,7 @@ scene.add(topLight);
     
     loader.load('https://nofhupihkzgcjwqguwjb.supabase.co/storage/v1/object/public/3d/robo%20maze%20runner.glb', 
       (gltf) => {
+        console.log(gltf.animations);
         const model = gltf.scene;
         model.traverse((node) => {
           if (node.isMesh) {
