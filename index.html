@@ -913,6 +913,14 @@
     camera.position.set(-2.5, 1.2, -6);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+
+
+    
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2; // 👈 aumenta ~20% a luz geral
+
+
+    
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
