@@ -1042,7 +1042,7 @@
     initHeroThree();
   }
   
-  // ==================== SEGUNDO MODELO 3D (CONTATO) ====================
+   // ==================== SEGUNDO MODELO 3D (CONTATO) ====================
   const contactContainer = document.getElementById('contactThreeCanvas');
   
   function initContactThree() {
@@ -1092,42 +1092,48 @@
     let mixer;
     const clock = new THREE.Clock();
     
-    // Você pode trocar este link pelo modelo 3D que desejar
-    // Sugestão: usar um modelo diferente do primeiro para variedade
-    // Link alternativo: https://threejs.org/examples/models/gltf/Flamingo.gltf
-    loader.load('https://threejs.org/examples/models/gltf/Flamingo.gltf', 
+    // Carregando o arquivo dino.glb da raiz
+    loader.load('./dino.glb', 
       (gltf) => {
-        console.log('✅ Segundo modelo 3D carregado!');
+        console.log('✅ Modelo do Dino carregado com sucesso!');
         const model = gltf.scene;
-        mixer = new THREE.AnimationMixer(model);
+        
+        // Verificar e aplicar animações se existirem
         if (gltf.animations.length > 0) {
+          mixer = new THREE.AnimationMixer(model);
           const action = mixer.clipAction(gltf.animations[0]);
           action.play();
-          action.timeScale = 1.5;
+          action.timeScale = 1.2;
+          console.log('🎬 Animação do Dino reproduzindo');
         }
+        
+        // Ajustar materiais para ficar mais bonito
         model.traverse((node) => {
           if (node.isMesh) {
             node.material.roughness = 0.4;
-            node.material.metalness = 0.3;
+            node.material.metalness = 0.2;
+            // Se quiser que o dino fique com cores normais, remova o grayscale
+            // node.material.color.multiplyScalar(1);
           }
         });
-        model.scale.set(1.2, 1.2, 1.2);
+        
+        // Ajustar escala e posição conforme necessário
+        model.scale.set(1.0, 1.0, 1.0); // Ajuste aqui se o dino estiver muito grande/pequeno
         model.position.set(0, -0.5, 0);
         scene.add(model);
       },
       (xhr) => {
-        console.log('Segundo modelo:', (xhr.loaded / xhr.total * 100) + '% carregado');
+        console.log('Carregando Dino:', Math.round(xhr.loaded / xhr.total * 100) + '%');
       },
       (error) => {
-        console.error('❌ Erro ao carregar segundo modelo 3D:', error);
-        // Fallback: criar um cubo geométrico animado
+        console.error('❌ Erro ao carregar o modelo do Dino:', error);
+        // Fallback caso o modelo não carregue
         const geometry = new THREE.BoxGeometry(1, 1, 1);
         const material = new THREE.MeshStandardMaterial({ color: 0x666666, metalness: 0.5, roughness: 0.3 });
         const fallbackCube = new THREE.Mesh(geometry, material);
         fallbackCube.position.set(0, 0, 0);
         scene.add(fallbackCube);
         
-        // Adicionar animação de rotação ao fallback
         function animateFallback() {
           requestAnimationFrame(animateFallback);
           fallbackCube.rotation.x += 0.01;
