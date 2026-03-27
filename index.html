@@ -962,6 +962,12 @@ scene.add(topLight);
       (gltf) => {
         console.log(gltf.animations);
         const model = gltf.scene;
+        const mixer = new THREE.AnimationMixer(model);
+
+if (gltf.animations.length > 0) {
+  const action = mixer.clipAction(gltf.animations[0]);
+  action.play();
+}
         model.traverse((node) => {
           if (node.isMesh) {
             node.material.roughness = 0.3;
@@ -985,12 +991,19 @@ scene.add(topLight);
         scene.add(fallbackMesh);
       }
     );
+
+    let mixer;
+const clock = new THREE.Clock();
     
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
-    }
+   function animate() {
+  requestAnimationFrame(animate);
+
+  const delta = clock.getDelta();
+  if (mixer) mixer.update(delta);
+
+  controls.update();
+  renderer.render(scene, camera);
+}
     animate();
     
     window.addEventListener('resize', () => {
