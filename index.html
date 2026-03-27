@@ -916,98 +916,105 @@
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.outputEncoding = THREE.sRGBEncoding; // 👈 cores mais realistas
     container.appendChild(renderer.domElement);
     
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
+    controls.autoRotate = false;
+    controls.autoRotateSpeed = 1.5;
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.target.set(0, 0.8, 0);
+    
+// Luz ambiente mais forte (ilumina tudo uniformemente)
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+scene.add(ambientLight);
 
-    // 🔥 ILUMINAÇÃO CORRIGIDA (equilibrada e mais elegante)
+// Luz principal direcional (mais intensa)
+const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
+mainLight.position.set(2, 3, 4);
+scene.add(mainLight);
 
-    // Luz ambiente (base suave)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+// Luz de preenchimento (fill light)
+const fillLight = new THREE.PointLight(0x88aaff, 0.8);
+fillLight.position.set(1, 2, 2);
+scene.add(fillLight);
 
-    // Luz principal (key light)
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
-    keyLight.position.set(3, 4, 5);
-    scene.add(keyLight);
+// Luz traseira para contorno
+const backLight = new THREE.PointLight(0xffaa88, 0.6);
+backLight.position.set(-1, 1.5, -2);
+scene.add(backLight);
 
-    // Luz de preenchimento (suaviza sombras)
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    fillLight.position.set(-3, 2, 2);
-    scene.add(fillLight);
+// Luz lateral direita
+const rightLight = new THREE.PointLight(0xffffff, 0.7);
+rightLight.position.set(2, 1.5, 1);
+scene.add(rightLight);
 
-    // Luz de recorte (contorno bonito)
-    const rimLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    rimLight.position.set(0, 2, -4);
-    scene.add(rimLight);
+// Luz lateral esquerda
+const leftLight = new THREE.PointLight(0xffffff, 0.7);
+leftLight.position.set(-2, 1.5, 1);
+scene.add(leftLight);
 
-    // Luz leve azul (estética premium)
-    const accentLight = new THREE.PointLight(0x88aaff, 0.4);
-    accentLight.position.set(2, 2, 2);
-    scene.add(accentLight);
+// Luz frontal (importante para clarear a frente)
+const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
+frontLight.position.set(0, 1, 3);
+scene.add(frontLight);
 
+// Luz de destaque superior
+const topLight = new THREE.PointLight(0xffffff, 0.5);
+topLight.position.set(0, 3, 0);
+scene.add(topLight);
+    
     const loader = new GLTFLoader();
     
-    let mixer;
-    const clock = new THREE.Clock();
-
-    loader.load(
-      'https://nofhupihkzgcjwqguwjb.supabase.co/storage/v1/object/public/3d/robo%20maze%20runner.glb', 
+    loader.load('https://nofhupihkzgcjwqguwjb.supabase.co/storage/v1/object/public/3d/robo%20maze%20runner.glb', 
       (gltf) => {
+        console.log(gltf.animations);
         const model = gltf.scene;
+       mixer = new THREE.AnimationMixer(model);
 
-        // animação
-        mixer = new THREE.AnimationMixer(model);
-        if (gltf.animations.length > 0) {
-          const action = mixer.clipAction(gltf.animations[0]);
-          action.play();
-          action.timeScale = 0.6; // 👈 velocidade suave e elegante
-        }
-
-        // material mais bonito
+if (gltf.animations.length > 0) {
+  const action = mixer.clipAction(gltf.animations[0]);
+  action.play();
+  action.timeScale = 5; // mais lento
+}
         model.traverse((node) => {
           if (node.isMesh) {
-            node.material.roughness = 0.4;
-            node.material.metalness = 0.6;
+            node.material.roughness = 0.3;
+            node.material.metalness = 0.7;
           }
         });
-
         model.scale.set(0.85, 0.85, 0.85);
         model.position.set(0, -0.3, 0);
         scene.add(model);
+        console.log('✅ Modelo 3D carregado com sucesso!');
       },
-      undefined,
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total * 100) + '% carregado');
+      },
       (error) => {
-        console.error('Erro ao carregar modelo:', error);
-
-        // fallback
+        console.error('❌ Erro ao carregar modelo 3D:', error);
         const geometry = new THREE.IcosahedronGeometry(0.8, 0);
-        const material = new THREE.MeshStandardMaterial({
-          color: 0x888888,
-          metalness: 0.6,
-          roughness: 0.4
-        });
+        const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.2 });
         const fallbackMesh = new THREE.Mesh(geometry, material);
         fallbackMesh.position.set(0, 0.5, 0);
         scene.add(fallbackMesh);
       }
     );
+
+    let mixer;
+const clock = new THREE.Clock();
     
-    function animate() {
-      requestAnimationFrame(animate);
+   function animate() {
+  requestAnimationFrame(animate);
 
-      const delta = clock.getDelta();
-      if (mixer) mixer.update(delta);
+  const delta = clock.getDelta();
+  if (mixer) mixer.update(delta);
 
-      controls.update();
-      renderer.render(scene, camera);
-    }
+  controls.update();
+  renderer.render(scene, camera);
+}
     animate();
     
     window.addEventListener('resize', () => {
@@ -1019,90 +1026,53 @@
     });
   }
   
-  if (container) initThree();
-
-  // restante do JS (igual ao seu)
+  if (container) {
+    initThree();
+  }
+  
+  // JavaScript adicional para funcionalidades
   let coffeeCount = 4328;
   const coffeeElement = document.getElementById('coffeeCount');
-  setInterval(() => {
-    coffeeCount += Math.floor(Math.random() * 3) + 2;
-    if (coffeeElement) coffeeElement.textContent = coffeeCount;
-  }, 86400000);
+  setInterval(() => { coffeeCount += Math.floor(Math.random() * 3) + 2; if(coffeeElement) coffeeElement.textContent = coffeeCount; }, 86400000);
   
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
-  if (menuToggle) {
-    menuToggle.addEventListener('click', () => {
-      menuToggle.classList.toggle('active');
-      navLinks.classList.toggle('active');
-    });
-  }
+  if(menuToggle) menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
   
   const modal = document.getElementById('modal');
   const openModalBtns = document.querySelectorAll('#openModalBtn, #openModalBtn2');
   const closeModal = document.getElementById('closeModal');
-
-  openModalBtns.forEach(btn => {
-    btn.addEventListener('click', () => modal.classList.add('active'));
-  });
-
-  if (closeModal) {
-    closeModal.addEventListener('click', () => modal.classList.remove('active'));
-  }
-
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('active');
-  });
+  openModalBtns.forEach(btn => btn.addEventListener('click', () => modal.classList.add('active')));
+  if(closeModal) closeModal.addEventListener('click', () => modal.classList.remove('active'));
+  modal.addEventListener('click', (e) => { if(e.target === modal) modal.classList.remove('active'); });
   
   const projectForm = document.getElementById('projectForm');
-  if (projectForm) {
-    projectForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const nome = document.getElementById('nome')?.value || '';
-      const tipo = document.getElementById('tipo')?.value || '';
-      const detalhes = document.getElementById('detalhes')?.value || '';
-
-      if (!nome || !tipo || !detalhes) {
-        alert('Preencha os campos obrigatórios');
-        return;
-      }
-
-      const msg = `*Novo Projeto*%0A%0ANome: ${nome}%0ATipo: ${tipo}%0ADetalhes: ${detalhes}`;
-      window.open(`https://wa.me/5561996067198?text=${msg}`, '_blank');
-
-      modal.classList.remove('active');
-      projectForm.reset();
-    });
-  }
-  
-  const header = document.querySelector('.header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) header.classList.add('scrolled');
-    else header.classList.remove('scrolled');
+  if(projectForm) projectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nome = document.getElementById('nome')?.value || '';
+    const tipo = document.getElementById('tipo')?.value || '';
+    const detalhes = document.getElementById('detalhes')?.value || '';
+    if(!nome || !tipo || !detalhes) { alert('Preencha os campos obrigatórios'); return; }
+    const msg = `*Novo Projeto*%0A%0ANome: ${nome}%0ATipo: ${tipo}%0ADetalhes: ${detalhes}`;
+    window.open(`https://wa.me/5561996067198?text=${msg}`, '_blank');
+    modal.classList.remove('active');
+    projectForm.reset();
   });
   
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up')
-    .forEach(el => observer.observe(el));
+  const header = document.querySelector('.header');
+  window.addEventListener('scroll', () => { if(window.scrollY > 50) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
+  
+  const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-up').forEach(el => observer.observe(el));
   
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const hash = this.getAttribute('href');
-      if (hash === "#" || hash === "") return;
-
+      if(hash === "#" || hash === "") return;
       const target = document.querySelector(hash);
-      if (target) {
+      if(target) {
         e.preventDefault();
-        window.scrollTo({
-          top: target.offsetTop - 100,
-          behavior: 'smooth'
-        });
+        window.scrollTo({ top: target.offsetTop - 100, behavior: 'smooth' });
       }
     });
   });
