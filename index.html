@@ -892,6 +892,10 @@
 
   const container = document.getElementById('threeCanvasContainer');
   
+  // Variável para controlar as animações
+  let mixer = null;
+  let clock = new THREE.Clock();
+  
   function initThree() {
     const width = container.clientWidth;
     const height = container.clientHeight;
@@ -900,7 +904,7 @@
     scene.background = null;
     
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
-    camera.position.set(-2.5, 1.2, -6);
+    camera.position.set(0, 1.2, 4.2);
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -912,64 +916,94 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.autoRotate = false;
-    controls.autoRotateSpeed = 1.5;
     controls.enableZoom = false;
     controls.enablePan = false;
     controls.target.set(0, 0.8, 0);
     
-// Luz ambiente mais forte (ilumina tudo uniformemente)
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-scene.add(ambientLight);
-
-// Luz principal direcional (mais intensa)
-const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
-mainLight.position.set(2, 3, 4);
-scene.add(mainLight);
-
-// Luz de preenchimento (fill light)
-const fillLight = new THREE.PointLight(0x88aaff, 0.8);
-fillLight.position.set(1, 2, 2);
-scene.add(fillLight);
-
-// Luz traseira para contorno
-const backLight = new THREE.PointLight(0xffaa88, 0.6);
-backLight.position.set(-1, 1.5, -2);
-scene.add(backLight);
-
-// Luz lateral direita
-const rightLight = new THREE.PointLight(0xffffff, 0.7);
-rightLight.position.set(2, 1.5, 1);
-scene.add(rightLight);
-
-// Luz lateral esquerda
-const leftLight = new THREE.PointLight(0xffffff, 0.7);
-leftLight.position.set(-2, 1.5, 1);
-scene.add(leftLight);
-
-// Luz frontal (importante para clarear a frente)
-const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
-frontLight.position.set(0, 1, 3);
-scene.add(frontLight);
-
-// Luz de destaque superior
-const topLight = new THREE.PointLight(0xffffff, 0.5);
-topLight.position.set(0, 3, 0);
-scene.add(topLight);
+    // Iluminação melhorada
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+    
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
+    mainLight.position.set(2, 3, 4);
+    scene.add(mainLight);
+    
+    const fillLight = new THREE.PointLight(0x88aaff, 0.8);
+    fillLight.position.set(1, 2, 2);
+    scene.add(fillLight);
+    
+    const backLight = new THREE.PointLight(0xffaa88, 0.6);
+    backLight.position.set(-1, 1.5, -2);
+    scene.add(backLight);
+    
+    const rightLight = new THREE.PointLight(0xffffff, 0.7);
+    rightLight.position.set(2, 1.5, 1);
+    scene.add(rightLight);
+    
+    const leftLight = new THREE.PointLight(0xffffff, 0.7);
+    leftLight.position.set(-2, 1.5, 1);
+    scene.add(leftLight);
+    
+    const frontLight = new THREE.DirectionalLight(0xffffff, 1.0);
+    frontLight.position.set(0, 1, 3);
+    scene.add(frontLight);
+    
+    const topLight = new THREE.PointLight(0xffffff, 0.5);
+    topLight.position.set(0, 3, 0);
+    scene.add(topLight);
     
     const loader = new GLTFLoader();
     
     loader.load('robo.glb', 
       (gltf) => {
         const model = gltf.scene;
+        
+        // Configurar materiais (mantém a textura original)
         model.traverse((node) => {
-          if (node.isMesh) {
-            node.material.roughness = 0.3;
-            node.material.metalness = 0.7;
+          if (node.isMesh && node.material) {
+            node.material.roughness = 0.4;
+            node.material.metalness = 0.2;
           }
         });
+        
         model.scale.set(0.85, 0.85, 0.85);
         model.position.set(0, -0.3, 0);
         scene.add(model);
+        
+        // ========== ATIVAR ANIMAÇÕES DO MODELO ==========
+        if (gltf.animations && gltf.animations.length > 0) {
+          console.log(`✅ ${gltf.animations.length} animações encontradas!`);
+          
+          // Listar todas as animações no console
+          gltf.animations.forEach((anim, index) => {
+            console.log(`  - Animação ${index + 1}: ${anim.name || 'sem nome'}`);
+          });
+          
+          // Criar o mixer para controlar as animações
+          mixer = new THREE.AnimationMixer(model);
+          
+          // Opção 1: Tocar TODAS as animações em loop
+          gltf.animations.forEach((clip) => {
+            const action = mixer.clipAction(clip);
+            action.play();
+            console.log(`  ▶️ Tocando: ${clip.name || 'animação'}`);
+          });
+          
+          // Opção 2: Tocar apenas a PRIMEIRA animação (descomente se preferir)
+          // const action = mixer.clipAction(gltf.animations[0]);
+          // action.play();
+          
+          // Opção 3: Tocar animação específica por nome (exemplo)
+          // const walkAnim = gltf.animations.find(anim => anim.name === 'Walk');
+          // if (walkAnim) {
+          //   const action = mixer.clipAction(walkAnim);
+          //   action.play();
+          // }
+          
+        } else {
+          console.log('⚠️ Nenhuma animação encontrada no modelo 3D');
+        }
+        
         console.log('✅ Modelo 3D carregado com sucesso!');
       },
       (xhr) => {
@@ -978,7 +1012,7 @@ scene.add(topLight);
       (error) => {
         console.error('❌ Erro ao carregar modelo 3D:', error);
         const geometry = new THREE.IcosahedronGeometry(0.8, 0);
-        const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.8, roughness: 0.2 });
+        const material = new THREE.MeshStandardMaterial({ color: 0x888888, metalness: 0.5, roughness: 0.3 });
         const fallbackMesh = new THREE.Mesh(geometry, material);
         fallbackMesh.position.set(0, 0.5, 0);
         scene.add(fallbackMesh);
@@ -987,6 +1021,13 @@ scene.add(topLight);
     
     function animate() {
       requestAnimationFrame(animate);
+      
+      // Atualizar as animações do modelo
+      if (mixer) {
+        const delta = clock.getDelta();
+        mixer.update(delta);
+      }
+      
       controls.update();
       renderer.render(scene, camera);
     }
