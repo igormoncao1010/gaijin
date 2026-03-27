@@ -967,6 +967,7 @@ scene.add(topLight);
 if (gltf.animations.length > 0) {
   const action = mixer.clipAction(gltf.animations[0]);
   action.play();
+  action.timeScale = 2; // mais lento
 }
         model.traverse((node) => {
           if (node.isMesh) {
