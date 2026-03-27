@@ -726,6 +726,34 @@
 
 
    
+
+
+
+
+   .relative-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-floating-3d {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 500px;
+  height: 500px;
+  z-index: 999; /* garante que fique sobre o conteúdo */
+  pointer-events: none; /* não bloqueia cliques */
+}
+
+/* responsivo */
+@media (max-width: 1024px) {
+  .contact-floating-3d {
+    width: 300px;
+    height: 300px;
+    right: 10px;
+  }
+}
   </style>
 </head>
 <body>
@@ -847,26 +875,47 @@
     </div>
   </div>
 
-  <section id="contact">
-    <div class="container">
-      <h2 class="section-title fade-up">Vamos transformar sua ideia</h2>
-     <div class="contact-wrapper">
-  <div class="contact-info fade-left">
-    <p>Conte o que você precisa. Criamos soluções sob medida para o seu negócio.</p>
-    
-    <div class="contact-detail">
-      <a href="https://wa.me/5561996067198" target="_blank">(61) 99606-7198</a><br>
-      <a href="mailto:hello@gaijincreative.com">hello@gaijincreative.com</a>
-    </div>
+ 
 
-    <!-- 👇 botão agora abaixo do email -->
-    <button class="btn-outline" id="openModalBtn2" style="margin-top: 24px;">
-      Solicitar orçamento →
-    </button>
-  </div>
-</div>
+
+
+
+
+<section id="contact" class="relative-section">
+  <div class="container">
+    <div class="contact-wrapper">
+
+      <!-- Lado esquerdo: info e botão -->
+      <div class="contact-info fade-left">
+        <p>Conte o que você precisa. Criamos soluções sob medida para o seu negócio.</p>
+        
+        <div class="contact-detail">
+          <a href="https://wa.me/5561996067198" target="_blank">(61) 99606-7198</a><br>
+          <a href="mailto:hello@gaijincreative.com">hello@gaijincreative.com</a>
+        </div>
+
+        <!-- botão abaixo do email -->
+        <button class="btn-outline" id="openModalBtn2" style="margin-top: 24px;">
+          Solicitar orçamento →
+        </button>
+      </div>
+
+      <!-- Novo 3D flutuante no lado direito (ID e classe únicos) -->
+      <div id="contactFloating3D" class="contact-floating-3d"></div>
+
     </div>
-  </section>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
 </main>
 
 <footer class="footer">
@@ -1089,6 +1138,64 @@ const clock = new THREE.Clock();
       }
     });
   });
+
+
+
+
+
+
+
+
+
+
+
+  import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
+camera.position.set(0, 0, 5);
+
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(500, 500);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.getElementById('contactFloating3D').appendChild(renderer.domElement);
+
+// luz
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
+
+// loader do modelo
+const loader = new GLTFLoader();
+loader.load('dino.glb', function(gltf) {
+  const model = gltf.scene;
+  model.scale.set(1, 1, 1);
+  model.position.set(0, 0, 0);
+  scene.add(model);
+
+  // animação rotativa leve
+  function animate() {
+    requestAnimationFrame(animate);
+    model.rotation.y += 0.005;
+    renderer.render(scene, camera);
+  }
+  animate();
+});
+
+// redimensionamento responsivo
+window.addEventListener('resize', () => {
+  const container = document.getElementById('contactFloating3D');
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height);
+});
 </script>
 </body>
 </html>
