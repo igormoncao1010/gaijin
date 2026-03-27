@@ -962,7 +962,7 @@ scene.add(topLight);
       (gltf) => {
         console.log(gltf.animations);
         const model = gltf.scene;
-        const mixer = new THREE.AnimationMixer(model);
+       mixer = new THREE.AnimationMixer(model);
 
 if (gltf.animations.length > 0) {
   const action = mixer.clipAction(gltf.animations[0]);
