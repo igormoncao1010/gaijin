@@ -900,9 +900,18 @@
         </button>
       </div>
 
-     <!-- Novo 3D flutuante totalmente isolado -->
-<div id="floating3DContainerUnique" style="position: absolute; top: 50%; right: 0; transform: translateY(-50%); width: 500px; height: 500px; z-index: 9999; pointer-events: none;">
-  <!-- O Three.js vai renderizar aqui -->
+<!-- Novo 3D flutuante independente -->
+<div id="sandbox3DWrapper_abc123" style="
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 400px;
+  height: 400px;
+  pointer-events: none;
+  z-index: 99999;
+">
+  <!-- Three.js vai renderizar aqui -->
 </div>
 
     </div>
@@ -1151,52 +1160,54 @@ const clock = new THREE.Clock();
 
 
 
- import * as THREE from 'three';
+import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-// Cria a cena e câmera
-const scene3D = new THREE.Scene();
-const camera3D = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
-camera3D.position.set(0, 0, 5);
+// Seleciona container isolado
+const container = document.getElementById('sandbox3DWrapper_abc123');
 
-// Renderer
-const container3D = document.getElementById('floating3DContainerUnique');
-const renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-renderer3D.setSize(container3D.clientWidth, container3D.clientHeight);
-renderer3D.setPixelRatio(window.devicePixelRatio);
-container3D.appendChild(renderer3D.domElement);
+// Cena e câmera
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
+camera.position.set(0, 0, 5);
+
+// Renderer independente
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+container.appendChild(renderer.domElement);
 
 // Luz
-const ambientLight3D = new THREE.AmbientLight(0xffffff, 1);
-scene3D.add(ambientLight3D);
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
 
-const directionalLight3D = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight3D.position.set(5, 5, 5);
-scene3D.add(directionalLight3D);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(5, 5, 5);
+scene.add(directionalLight);
 
-// Loader do modelo
-const loader3D = new GLTFLoader();
-loader3D.load('dino.glb', (gltf) => {
-  const model3D = gltf.scene;
-  model3D.scale.set(1, 1, 1);
-  scene3D.add(model3D);
+// Loader do modelo GLB
+const loader = new GLTFLoader();
+loader.load('dino.glb', (gltf) => {
+  const model = gltf.scene;
+  model.scale.set(1, 1, 1);
+  scene.add(model);
 
   // Animação leve
-  function animate3D() {
-    requestAnimationFrame(animate3D);
-    model3D.rotation.y += 0.005;
-    renderer3D.render(scene3D, camera3D);
+  function animate() {
+    requestAnimationFrame(animate);
+    model.rotation.y += 0.005;
+    renderer.render(scene, camera);
   }
-  animate3D();
+  animate();
 });
 
-// Responsivo
+// Responsividade
 window.addEventListener('resize', () => {
-  const width = container3D.clientWidth;
-  const height = container3D.clientHeight;
-  camera3D.aspect = width / height;
-  camera3D.updateProjectionMatrix();
-  renderer3D.setSize(width, height);
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height);
 });
 </script>
 </body>
