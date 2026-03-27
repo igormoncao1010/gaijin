@@ -927,9 +927,9 @@
     controls.enablePan = false;
     controls.target.set(0, 0.8, 0);
     
-// Luz ambiente mais forte (ilumina tudo uniformemente)
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-scene.add(ambientLight);
+const mainLight = new THREE.DirectionalLight(0xffffff, 2.5); // mais forte
+mainLight.position.set(3, 4, 5);
+scene.add(mainLight);
 
 // Luz principal direcional (mais intensa)
 const mainLight = new THREE.DirectionalLight(0xffffff, 1.8);
