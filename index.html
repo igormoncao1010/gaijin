@@ -721,6 +721,20 @@
       .hero-title { font-size: 2rem; }
       .hero-3d { height: 320px; }
     }
+
+
+
+
+    .hero-3d::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50px;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(to right, transparent, #000);
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
