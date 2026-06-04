@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Gaijin Creative | Experi&ecirc;ncias visuais imposs&iacute;veis de ignorar</title>
+  <meta name="description" content="Gaijin Creative cria identidades, sites e experi&ecirc;ncias digitais cinematogr&aacute;ficas para marcas que precisam ser sentidas.">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" href="icone.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas class="atmosphere" data-atmosphere aria-hidden="true"></canvas>
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <div class="loader" data-loader>
+    <div class="loader-frame">
+      <img src="01.svg" alt="Gaijin Creative">
+      <div class="boot-lines" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <button class="loader-button" type="button" data-loader-button>Iniciar transmiss&atilde;o</button>
+      <p>Carregando uma experi&ecirc;ncia fora do modo comum.</p>
+    </div>
+  </div>
+
+  <div class="scroll-meter" aria-hidden="true"><span></span></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <aside class="cinema-hud" aria-label="Painel da experi&ecirc;ncia">
+    <div><span>CENA</span><strong data-hud-scene>00 / Entrada</strong></div>
+    <div><span>SINAL</span><strong data-hud-signal>98%</strong></div>
+    <div><span>MODO</span><strong data-hud-mode>CINEMA</strong></div>
+  </aside>
+
+  <div class="control-dock" aria-label="Controles da experi&ecirc;ncia">
+    <button class="dock-button magnetic" type="button" data-audio-toggle>Som off</button>
+    <button class="dock-button magnetic" type="button" data-director-toggle>Director</button>
+  </div>
+
+  <aside class="scene-rail" aria-hidden="true">
+    <strong data-scene-index>00</strong>
+    <span data-scene-label>Entrada</span>
+  </aside>
+
+  <header class="site-header" data-header>
+    <a class="logo-link magnetic" href="#top" aria-label="Gaijin Creative">
+      <img src="01.svg" alt="Gaijin Creative">
+    </a>
+    <button class="menu-button magnetic" type="button" data-menu-button aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" data-nav>
+      <a href="#reactor">Reator</a>
+      <a href="#work">Arquivo</a>
+      <a href="#method">Ritual</a>
+      <a href="#brief">Launch</a>
+      <a href="#contact">Contato</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero scene" data-scene="00" data-label="Entrada">
+      <video class="hero-video" autoplay muted loop playsinline>
+        <source src="01.mp4" type="video/mp4">
+      </video>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-content">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Gaijin Creative / visual systems / web cinema</p>
+          <h1>
+            <span>Marcas</span>
+            <span>nunca devem</span>
+            <span>aparecer.</span>
+            <em>Devem invadir.</em>
+          </h1>
+          <p class="hero-text">Criamos identidades, sites e experi&ecirc;ncias digitais com atmosfera, movimento, contraste e precis&atilde;o para transformar aten&ccedil;&atilde;o em desejo.</p>
+          <div class="hero-actions">
+            <a class="button magnetic" href="#brief">Abrir launchpad</a>
+            <a class="button button-ghost magnetic" href="#work">Entrar no arquivo</a>
+          </div>
+        </div>
+
+        <aside class="command-deck reveal" data-tilt>
+          <div class="deck-head">
+            <span>LIVE SIGNAL</span>
+            <strong>GAIJIN_01</strong>
+          </div>
+          <div class="orbital-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="deck-grid">
+            <p><span>Impacto</span><strong>98%</strong></p>
+            <p><span>Ru&iacute;do</span><strong>02%</strong></p>
+            <p><span>Entrega</span><strong>Full stack</strong></p>
+            <p><span>Modo</span><strong>Cinema</strong></p>
+          </div>
+        </aside>
+      </div>
+      <a class="scroll-cue magnetic" href="#reactor" aria-label="Pr&oacute;xima cena"><span></span></a>
+    </section>
+
+    <section id="reactor" class="reactor scene" data-scene="01" data-label="Reator">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cena 01 / Reator de marca</p>
+        <h2>Escolha uma frequ&ecirc;ncia. O sistema muda junto.</h2>
+      </div>
+      <div class="reactor-grid reveal">
+        <div class="reactor-tabs" role="tablist" aria-label="Servi&ccedil;os">
+          <button class="reactor-tab active magnetic" type="button" data-service="site">Sites imersivos</button>
+          <button class="reactor-tab magnetic" type="button" data-service="brand">Identidade magn&eacute;tica</button>
+          <button class="reactor-tab magnetic" type="button" data-service="motion">Motion & intera&ccedil;&atilde;o</button>
+          <button class="reactor-tab magnetic" type="button" data-service="launch">Lan&ccedil;amento digital</button>
+        </div>
+        <article class="reactor-stage" data-reactor-stage data-tilt>
+          <p class="stage-code">01</p>
+          <h3>Sites que parecem cenas, n&atilde;o p&aacute;ginas.</h3>
+          <p>Hero cinematogr&aacute;fico, narrativa por scroll, microintera&ccedil;&otilde;es e convers&atilde;o sem matar a aura da marca.</p>
+          <div class="tag-row">
+            <span>Interface</span><span>Dire&ccedil;&atilde;o</span><span>Performance</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="work" class="archive scene" data-scene="02" data-label="Arquivo">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cena 02 / Arquivo visual</p>
+        <h2>Projetos em destaque. Abra, visite, explore.</h2>
+      </div>
+      <div class="archive-marquee reveal" aria-hidden="true">
+        <span>GAIJIN / BRAND / WEB / MOTION / IMPACT / </span>
+        <span>GAIJIN / BRAND / WEB / MOTION / IMPACT / </span>
+      </div>
+      <div class="project-orbit case-wall" data-project-orbit>
+        <article class="project-card case-card case-feature reveal" data-title="Dunkin" data-type="Design" data-link="https://www.behance.net/gallery/155831857/DUNKIN-DONUTS" data-note="Sistema visual pop com leitura imediata e presen&ccedil;a de prateleira.">
+          <img src="imagens/01.png" alt="Projeto Dunkin">
+          <div class="case-meta">
+            <p>Design / Behance</p>
+            <h3>Dunkin</h3>
+            <span>Sistema visual pop com leitura imediata.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://www.behance.net/gallery/155831857/DUNKIN-DONUTS" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="ProEpi" data-type="Design" data-link="https://www.behance.net/gallery/156656805/ProEpi" data-note="Identidade institucional com contraste, clareza e s&iacute;mbolo forte.">
+          <img src="imagens/02.png" alt="Projeto ProEpi">
+          <div class="case-meta">
+            <p>Design / Behance</p>
+            <h3>ProEpi</h3>
+            <span>Identidade institucional de alto contraste.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://www.behance.net/gallery/156656805/ProEpi" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="Karam Consultoria" data-type="Design" data-link="https://www.behance.net/gallery/119978981/Karam-Consultoria" data-note="Marca geom&eacute;trica, s&oacute;lida e pronta para comunica&ccedil;&atilde;o corporativa.">
+          <img src="imagens/03.png" alt="Karam Consultoria">
+          <div class="case-meta">
+            <p>Design / Behance</p>
+            <h3>Karam</h3>
+            <span>Marca geom&eacute;trica e corporativa.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://www.behance.net/gallery/119978981/Karam-Consultoria" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="Instituto Mete Marcha" data-type="Site + logo" data-link="https://metemarcha.vercel.app/" data-note="Presen&ccedil;a digital direta para comunica&ccedil;&atilde;o social e institucional.">
+          <img src="imagens/04.png" alt="Instituto Mete Marcha">
+          <div class="case-meta">
+            <p>Site + Logo</p>
+            <h3>Mete Marcha</h3>
+            <span>Presen&ccedil;a digital institucional.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://metemarcha.vercel.app/" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="Wakanda Mineradora" data-type="Site" data-link="https://wakandamineradora.vercel.app/" data-note="Interface institucional para reputa&ccedil;&atilde;o, opera&ccedil;&atilde;o e autoridade.">
+          <img src="imagens/05.png" alt="Wakanda Mineradora">
+          <div class="case-meta">
+            <p>Site</p>
+            <h3>Wakanda</h3>
+            <span>Interface para reputa&ccedil;&atilde;o e autoridade.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://wakandamineradora.vercel.app/" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="Comunidade das Na&ccedil;&otilde;es" data-type="Design" data-link="https://www.behance.net/gallery/156727189/Comunidade-das-Nacoes" data-note="Identidade espiritual com presen&ccedil;a simb&oacute;lica e leitura limpa.">
+          <img src="imagens/06.png" alt="Comunidade das Na&ccedil;&otilde;es">
+          <div class="case-meta">
+            <p>Design / Behance</p>
+            <h3>Comunidade das Na&ccedil;&otilde;es</h3>
+            <span>S&iacute;mbolo forte e leitura limpa.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://www.behance.net/gallery/156727189/Comunidade-das-Nacoes" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="Wikinet" data-type="Logo" data-link="https://www.behance.net/gallery/148446635/Wikinet" data-note="S&iacute;mbolo modular e simples, criado para memoriza&ccedil;&atilde;o r&aacute;pida.">
+          <img src="imagens/07.png" alt="Wikinet">
+          <div class="case-meta">
+            <p>Logo / Behance</p>
+            <h3>Wikinet</h3>
+            <span>S&iacute;mbolo modular e memor&aacute;vel.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://www.behance.net/gallery/148446635/Wikinet" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="TV RBM" data-type="Site + logo" data-link="https://tvrbm.vercel.app/" data-note="Sistema visual direto para m&iacute;dia, conte&uacute;do e presen&ccedil;a online.">
+          <img src="imagens/08.png" alt="TV RBM">
+          <div class="case-meta">
+            <p>Site + Logo</p>
+            <h3>TV RBM</h3>
+            <span>Sistema visual para m&iacute;dia e conte&uacute;do.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://tvrbm.vercel.app/" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+        <article class="project-card case-card reveal" data-title="Hey rent a car" data-type="Site" data-link="https://hey-veiculos.vercel.app/" data-note="Experi&ecirc;ncia digital simples para facilitar escolha e contato.">
+          <img src="imagens/09.png" alt="Hey rent a car">
+          <div class="case-meta">
+            <p>Site</p>
+            <h3>Hey rent a car</h3>
+            <span>Experi&ecirc;ncia digital direta para convers&atilde;o.</span>
+            <div class="case-links">
+              <a class="case-link" href="https://hey-veiculos.vercel.app/" target="_blank" rel="noreferrer">Ver projeto</a>
+              <button class="case-detail" type="button">Detalhes</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="method" class="ritual scene" data-scene="03" data-label="Ritual">
+      <video class="ritual-video" autoplay muted loop playsinline>
+        <source src="02.mp4" type="video/mp4">
+      </video>
+      <div class="ritual-content">
+        <div class="section-head reveal">
+          <p class="eyebrow">Cena 03 / Ritual de cria&ccedil;&atilde;o</p>
+          <h2>O processo parece simples porque a complexidade fica nos bastidores.</h2>
+        </div>
+        <div class="ritual-panels reveal">
+          <button class="ritual-card active magnetic" type="button">
+            <span>01</span><strong>Escuta brutal</strong><small>Encontrar a tens&atilde;o certa da marca.</small>
+          </button>
+          <button class="ritual-card magnetic" type="button">
+            <span>02</span><strong>S&iacute;ntese visual</strong><small>Converter ru&iacute;do em dire&ccedil;&atilde;o.</small>
+          </button>
+          <button class="ritual-card magnetic" type="button">
+            <span>03</span><strong>Execu&ccedil;&atilde;o viva</strong><small>Design, interface, movimento e entrega.</small>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="brief" class="launch scene" data-scene="04" data-label="Launch">
+      <div class="section-head reveal">
+        <p class="eyebrow">Cena 04 / Launchpad</p>
+        <h2>Configure a miss&atilde;o antes do contato.</h2>
+      </div>
+      <form class="launch-console reveal" data-brief-form>
+        <div class="choice-row" role="group" aria-label="Tipo de projeto">
+          <label><input type="radio" name="kind" value="Site cinematogr&aacute;fico" checked><span>Site cinema</span></label>
+          <label><input type="radio" name="kind" value="Identidade completa"><span>Identidade</span></label>
+          <label><input type="radio" name="kind" value="Experi&ecirc;ncia completa"><span>Experi&ecirc;ncia total</span></label>
+        </div>
+        <label class="range-field">
+          <span>Intensidade visual</span>
+          <input type="range" name="intensity" min="1" max="3" value="3">
+        </label>
+        <label class="range-field">
+          <span>Velocidade de lan&ccedil;amento</span>
+          <input type="range" name="speed" min="1" max="3" value="2">
+        </label>
+        <div class="launch-output" data-tilt>
+          <p data-brief-line>Site cinematogr&aacute;fico com intensidade m&aacute;xima e ritmo equilibrado.</p>
+          <button class="button magnetic" type="button" data-launch-sequence>Transmitir brief</button>
+          <a class="stealth-link" data-whatsapp-link href="https://wa.me/5561996067198" target="_blank" rel="noreferrer">Abrir WhatsApp</a>
+        </div>
+      </form>
+      <div class="ai-console reveal" data-ai-console>
+        <div class="ai-copy">
+          <p class="eyebrow">IA / Diagn&oacute;stico de marca</p>
+          <h3>Transforme uma ideia solta em dire&ccedil;&atilde;o criativa.</h3>
+          <p>Descreva o projeto e a IA monta um diagn&oacute;stico, uma dire&ccedil;&atilde;o visual e uma mensagem pronta para enviar.</p>
+        </div>
+        <form class="ai-form" data-ai-form>
+          <label>
+            <span>Segmento ou nome da marca</span>
+            <input name="business" type="text" placeholder="Ex: cl&iacute;nica premium, igreja, startup, loja..." required>
+          </label>
+          <label>
+            <span>Objetivo principal</span>
+            <input name="goal" type="text" placeholder="Ex: vender mais, parecer premium, lan&ccedil;ar produto..." required>
+          </label>
+          <label>
+            <span>Vibe desejada</span>
+            <input name="vibe" type="text" placeholder="Ex: futurista, elegante, agressiva, editorial...">
+          </label>
+          <label class="ai-wide">
+            <span>Observa&ccedil;&otilde;es</span>
+            <textarea name="notes" rows="4" placeholder="Conte o contexto, p&uacute;blico, problemas atuais ou qualquer detalhe importante."></textarea>
+          </label>
+          <button class="button magnetic ai-wide" type="submit" data-ai-submit>Gerar diagn&oacute;stico</button>
+        </form>
+        <article class="ai-result" data-ai-result aria-live="polite">
+          <p class="eyebrow">Aguardando transmiss&atilde;o</p>
+          <h4>O diagn&oacute;stico inteligente aparecer&aacute; aqui.</h4>
+          <p>Quando gerado, ele tamb&eacute;m atualiza a mensagem do WhatsApp.</p>
+        </article>
+        <section class="ai-lab" data-ai-lab>
+          <div class="lab-head">
+            <p class="eyebrow">AI Lab / Ferramentas avan&ccedil;adas</p>
+            <h4>Depois do diagn&oacute;stico, aprofunde a miss&atilde;o.</h4>
+          </div>
+          <div class="lab-actions">
+            <button class="dock-button magnetic" type="button" data-suite-task="score">Score de impacto</button>
+            <button class="dock-button magnetic" type="button" data-suite-task="proposal">Gerar proposta</button>
+            <button class="dock-button magnetic" type="button" data-suite-task="moodboard">Moodboard</button>
+            <button class="dock-button magnetic" type="button" data-suite-task="personalize">Personalizar p&aacute;gina</button>
+          </div>
+          <div class="logo-analyzer">
+            <label>
+              <span>Upload de logo / imagem</span>
+              <input type="file" accept="image/*" data-logo-file>
+            </label>
+            <button class="dock-button magnetic" type="button" data-logo-analyze>Analisar logo</button>
+          </div>
+          <form class="concierge" data-chat-form>
+            <label>
+              <span>Chat concierge</span>
+              <input name="question" type="text" placeholder="Pergunte qual pacote, direção ou estratégia faz mais sentido.">
+            </label>
+            <button class="dock-button magnetic" type="submit">Perguntar</button>
+          </form>
+          <article class="lab-result" data-lab-result aria-live="polite">
+            <p class="eyebrow">M&oacute;dulos prontos</p>
+            <h4>Escolha uma ferramenta para expandir a dire&ccedil;&atilde;o.</h4>
+          </article>
+          <figure class="mood-image" data-mood-image hidden>
+            <img alt="Moodboard gerado por IA">
+            <figcaption></figcaption>
+          </figure>
+        </section>
+      </div>
+    </section>
+
+    <section id="contact" class="contact scene" data-scene="05" data-label="Contato">
+      <div class="contact-copy reveal">
+        <p class="eyebrow">Cena final / Contato</p>
+        <h2>A pr&oacute;xima marca imposs&iacute;vel pode ser a sua.</h2>
+        <p>Chama a Gaijin e vamos construir algo que n&atilde;o pare&ccedil;a template, tema pronto ou p&aacute;gina esquec&iacute;vel.</p>
+      </div>
+      <div class="contact-actions reveal">
+        <a class="button magnetic" href="https://wa.me/5561996067198" target="_blank" rel="noreferrer">WhatsApp</a>
+        <a class="button button-ghost magnetic" href="mailto:hello@gaijincreative.com">Email</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <img src="01.svg" alt="Gaijin Creative">
+    <p>Gaijin Creative &copy; 2026 / visual experiences</p>
+  </footer>
+
+  <dialog class="project-dialog" data-project-dialog>
+    <div class="case-viewer">
+      <button class="dialog-close magnetic" type="button" data-dialog-close aria-label="Fechar">&times;</button>
+      <div class="case-media">
+        <img data-dialog-image src="imagens/01.png" alt="">
+      </div>
+      <div class="case-info">
+        <p class="eyebrow" data-dialog-type>Design</p>
+        <h3 data-dialog-title>Projeto</h3>
+        <p data-dialog-note></p>
+        <div class="case-actions">
+          <button class="dock-button magnetic" type="button" data-case-prev>Anterior</button>
+          <button class="dock-button magnetic" type="button" data-case-next>Pr&oacute;ximo</button>
+        </div>
+        <a class="button magnetic" data-dialog-link href="#" target="_blank" rel="noreferrer">Abrir projeto</a>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="launch-sequence" data-launch-overlay aria-hidden="true">
+    <div class="launch-core">
+      <span data-launch-count>03</span>
+      <p>Transmitindo brief para a Gaijin</p>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
