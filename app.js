@@ -636,10 +636,12 @@ function renderLabResult(result) {
   }
 
   if (result.strengths || result.recommendations) {
+    const logoSource = result.mode === "huggingface" ? "Hugging Face" : result.mode === "local-analysis" ? "Analisador visual" : "Fallback";
     labResult.innerHTML = `
-      <p class="eyebrow">${result.mode === "huggingface" ? "Hugging Face" : "Fallback"} / Logo</p>
+      <p class="eyebrow">${logoSource} / Logo</p>
       <h4>${title}</h4>
       <p>${result.caption || ""}</p>
+      ${result.warning ? `<p><strong>Status tecnico:</strong> ${result.warning}</p>` : ""}
       <p><strong>Forças</strong></p>
       ${list(result.strengths)}
       <p><strong>Riscos</strong></p>
@@ -714,6 +716,80 @@ function readFileAsDataUrl(file) {
   });
 }
 
+function analyzeLogoLocally(imageData) {
+  return new Promise((resolve, reject) => {
+    if (!imageData) {
+      resolve(null);
+      return;
+    }
+
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      const maxSize = 420;
+      const scale = Math.min(1, maxSize / Math.max(image.naturalWidth, image.naturalHeight));
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+      const context = canvas.getContext("2d");
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+      const colors = new Map();
+      let visible = 0;
+      let transparent = 0;
+      let dark = 0;
+      let light = 0;
+      let colorfulness = 0;
+      let contrast = 0;
+      let totalBrightness = 0;
+      const step = Math.max(4, Math.floor(pixels.length / 16000) * 4);
+
+      for (let index = 0; index < pixels.length; index += step) {
+        const r = pixels[index];
+        const g = pixels[index + 1];
+        const b = pixels[index + 2];
+        const a = pixels[index + 3];
+        if (a < 28) {
+          transparent += 1;
+          continue;
+        }
+
+        visible += 1;
+        const brightness = (r * 0.299 + g * 0.587 + b * 0.114) / 255;
+        totalBrightness += brightness;
+        if (brightness < 0.28) dark += 1;
+        if (brightness > 0.74) light += 1;
+        colorfulness += (Math.max(r, g, b) - Math.min(r, g, b)) / 255;
+        contrast += Math.abs(brightness - 0.5) * 2;
+
+        const key = `${Math.round(r / 32) * 32},${Math.round(g / 32) * 32},${Math.round(b / 32) * 32}`;
+        colors.set(key, (colors.get(key) || 0) + 1);
+      }
+
+      const sampleCount = visible + transparent || 1;
+      const dominantColors = [...colors.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([color]) => `rgb(${color})`);
+
+      resolve({
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+        aspectRatio: Number((image.naturalWidth / Math.max(1, image.naturalHeight)).toFixed(2)),
+        transparentRatio: Number((transparent / sampleCount).toFixed(2)),
+        darkRatio: Number((dark / Math.max(1, visible)).toFixed(2)),
+        lightRatio: Number((light / Math.max(1, visible)).toFixed(2)),
+        averageBrightness: Number((totalBrightness / Math.max(1, visible)).toFixed(2)),
+        colorfulness: Number((colorfulness / Math.max(1, visible)).toFixed(2)),
+        contrast: Number((contrast / Math.max(1, visible)).toFixed(2)),
+        dominantColors,
+      });
+    };
+    image.onerror = reject;
+    image.src = imageData;
+  });
+}
+
 logoAnalyze.addEventListener("click", async () => {
   const file = logoFile.files?.[0];
   labResult.classList.add("is-loading");
@@ -724,10 +800,11 @@ logoAnalyze.addEventListener("click", async () => {
 
   try {
     const imageData = file ? await readFileAsDataUrl(file) : "";
+    const imageStats = await analyzeLogoLocally(imageData);
     const response = await fetch("/api/logo-analysis", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...getAiContext(), imageData, fileName: file?.name || "" }),
+      body: JSON.stringify({ ...getAiContext(), imageData, imageStats, fileName: file?.name || "" }),
     });
     if (!response.ok) throw new Error(`API retornou ${response.status}.`);
     renderLabResult(await response.json());

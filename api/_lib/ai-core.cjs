@@ -171,6 +171,50 @@ Formato: {"diagnosis":"","visualDirection":"","siteStructure":[""],"whatsappMess
   }
 }
 
+function buildLogoAnalysisFromStats(context, stats = {}) {
+  const width = Number(stats.width || 0);
+  const height = Number(stats.height || 0);
+  const aspectRatio = Number(stats.aspectRatio || (width && height ? width / height : 1));
+  const transparentRatio = Number(stats.transparentRatio || 0);
+  const colorfulness = Number(stats.colorfulness || 0);
+  const contrast = Number(stats.contrast || 0);
+  const darkRatio = Number(stats.darkRatio || 0);
+  const lightRatio = Number(stats.lightRatio || 0);
+  const dominantColors = Array.isArray(stats.dominantColors) ? stats.dominantColors.slice(0, 4) : [];
+
+  const format = aspectRatio > 1.7 ? "horizontal" : aspectRatio < 0.72 ? "vertical" : "compacto";
+  const strengths = [];
+  const risks = [];
+  const recommendations = [];
+
+  strengths.push(`Arquivo analisado com proporcao ${format}${width && height ? ` (${width}x${height}px)` : ""}.`);
+  if (transparentRatio > 0.12) strengths.push("Boa base para aplicar em fundos cinematograficos, porque o arquivo parece ter area transparente ou respiro visual.");
+  else risks.push("O logo parece ter pouco respiro/transparencia; pode precisar de uma versao isolada para fundos escuros e animacoes.");
+
+  if (contrast > 0.42) strengths.push("Contraste visual forte, bom para leitura rapida em hero, cards e chamadas de impacto.");
+  else risks.push("Contraste moderado; pode perder forca em telas pequenas ou sobre videos/fundos texturizados.");
+
+  if (colorfulness > 0.28) strengths.push("Paleta com presenca cromatica, boa para criar acentos, luzes e microinteracoes no site.");
+  else recommendations.push("Criar uma cor de apoio mais marcante para botoes, estados ativos e detalhes de interface.");
+
+  if (darkRatio > 0.62) risks.push("Predominio escuro: preparar versao clara/monocromatica para fundos pretos.");
+  if (lightRatio > 0.62) risks.push("Predominio claro: preparar versao escura para fundos claros e materiais impressos.");
+
+  recommendations.push("Criar versoes horizontal, vertical, reduzida e monocromatica.");
+  recommendations.push("Testar leitura em tamanhos pequenos, principalmente favicon, menu mobile e cards de projeto.");
+  recommendations.push("Definir area de seguranca ao redor do simbolo para o logo respirar em layouts cinematograficos.");
+  if (dominantColors.length) recommendations.push(`Usar cores dominantes como ponto de partida: ${dominantColors.join(", ")}.`);
+
+  return {
+    mode: "local-analysis",
+    title: "Analise visual de logo",
+    caption: "Analise feita a partir da imagem enviada: proporcao, contraste, transparencia, brilho e cores dominantes.",
+    strengths: strengths.slice(0, 4),
+    risks: risks.length ? risks.slice(0, 4) : ["Validar legibilidade sobre fundos com video, textura e brilho.", "Checar se o simbolo continua reconhecivel em favicon e mobile."],
+    recommendations: recommendations.slice(0, 5),
+  };
+}
+
 async function handleLogoAnalysis(input = {}) {
   const context = {
     business: String(input.business || "").slice(0, 500),
@@ -178,15 +222,12 @@ async function handleLogoAnalysis(input = {}) {
     fileName: String(input.fileName || "logo").slice(0, 180),
   };
 
-  if (!hfToken || !input.imageData) {
-    return {
-      mode: "fallback",
-      title: "Analise de logo",
-      caption: `Arquivo recebido: ${context.fileName}.`,
-      strengths: ["Base visual pronta para evoluir", "Pode ser conectada a uma narrativa digital mais forte"],
-      risks: ["Verificar leitura em tamanho pequeno", "Testar contraste em fundos escuros e claros"],
-      recommendations: ["Criar versao monocromatica", "Definir area de respiro", "Testar aplicacao em hero cinematografico"],
-    };
+  if (!input.imageData) {
+    return buildLogoAnalysisFromStats(context, input.imageStats);
+  }
+
+  if (!hfToken) {
+    return buildLogoAnalysisFromStats(context, input.imageStats);
   }
 
   try {
@@ -202,15 +243,28 @@ async function handleLogoAnalysis(input = {}) {
     const prompt = `[INST]Analise este logo para um site cinematografico. Responda SOMENTE JSON. Descricao visual: ${caption}. Formato: {"title":"","caption":"","strengths":[""],"risks":[""],"recommendations":[""]}[/INST]`;
     return { mode: "huggingface", ...(await callTextJson(prompt)) };
   } catch (error) {
-    return {
-      mode: "fallback",
-      title: "Analise de logo",
-      caption: `Nao consegui consultar o modelo visual agora. Arquivo: ${context.fileName}.`,
-      strengths: ["Material enviado com sucesso", "Pode ser usado como ponto de partida"],
-      risks: ["Confirmar legibilidade", "Validar contraste", "Checar mobile"],
-      recommendations: ["Preparar versoes", "Criar motion reveal", "Testar fundos cinematograficos"],
-      warning: error.message,
-    };
+    try {
+      const prompt = `[INST]
+O modelo visual da Hugging Face falhou ao tentar ler uma imagem de logo, mas o arquivo foi enviado pelo usuario.
+Crie uma analise estrategica util em portugues, deixando claro que a leitura dos pixels nao foi concluida.
+Contexto:
+- Marca/segmento: ${context.business || "nao informado"}
+- Objetivo: ${context.goal || "nao informado"}
+- Arquivo: ${context.fileName}
+- Erro tecnico: ${error.message}
+Responda SOMENTE JSON neste formato:
+{"title":"","caption":"","strengths":[""],"risks":[""],"recommendations":[""]}
+[/INST]`;
+      return {
+        mode: "huggingface",
+        ...(await callTextJson(prompt, 520)),
+        warning: error.message,
+      };
+    } catch {
+      // Fall through to deterministic fallback.
+    }
+
+    return buildLogoAnalysisFromStats(context, input.imageStats);
   }
 }
 
