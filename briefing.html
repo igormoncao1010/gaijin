@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Briefing de Logo | Gaijin Creative</title>
+  <meta name="description" content="Criador de briefing de logo da Gaijin Creative com cores, referencias e PDF visual para envio.">
+  <meta name="theme-color" content="#050505">
+  <link rel="icon" href="icone.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="briefing.css">
+</head>
+<body class="briefing-page">
+  <canvas class="briefing-atmosphere" data-briefing-atmosphere aria-hidden="true"></canvas>
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <header class="briefing-header">
+    <a class="logo-link" href="index.html" aria-label="Voltar para Gaijin Creative">
+      <img src="01.svg" alt="Gaijin Creative">
+    </a>
+    <nav class="briefing-nav" aria-label="Navegacao do briefing">
+      <a href="index.html#work">Arquivo</a>
+      <a href="index.html#contact">Contato</a>
+      <a class="briefing-nav-cta" href="#briefing-builder">Criar briefing</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="briefing-hero">
+      <div class="briefing-hero-copy">
+        <p class="eyebrow">Gaijin / briefing engine</p>
+        <h1>Briefing de logo pronto para virar dire&ccedil;&atilde;o visual.</h1>
+        <p>Preencha a ideia, escolha cores, envie referencias e gere um PDF visual para baixar e mandar no WhatsApp.</p>
+      </div>
+      <aside class="briefing-status" aria-label="Status do briefing">
+        <span>STATUS</span>
+        <strong data-briefing-status>AGUARDANDO INPUT</strong>
+        <small data-briefing-progress>0% decodificado</small>
+      </aside>
+    </section>
+
+    <section class="briefing-builder" id="briefing-builder">
+      <form class="briefing-form" data-briefing-form>
+        <div class="briefing-panel">
+          <p class="eyebrow">01 / Marca</p>
+          <div class="briefing-grid">
+            <label>
+              <span>Nome da marca</span>
+              <input name="brandName" type="text" placeholder="Ex: Aurora Lab" required>
+            </label>
+            <label>
+              <span>Segmento</span>
+              <input name="businessArea" type="text" placeholder="Ex: tecnologia, sa&uacute;de, moda, igreja">
+            </label>
+            <label>
+              <span>P&uacute;blico-alvo</span>
+              <input name="audience" type="text" placeholder="Ex: fundadores, jovens, p&uacute;blico premium">
+            </label>
+            <label>
+              <span>Personalidade</span>
+              <select name="personality">
+                <option>Minimalista e premium</option>
+                <option>Futurista e tecnol&oacute;gica</option>
+                <option>Elegante e institucional</option>
+                <option>Ousada e disruptiva</option>
+                <option>Humana e acolhedora</option>
+              </select>
+            </label>
+            <label class="briefing-wide">
+              <span>Ideia central do logo</span>
+              <textarea name="logoIdea" rows="5" placeholder="Explique o conceito, simbolos desejados, historia da marca, sensacao que o logo deve passar e qualquer ideia visual que voce ja tenha."></textarea>
+            </label>
+            <label class="briefing-wide">
+              <span>O que evitar</span>
+              <input name="avoid" type="text" placeholder="Ex: cliche, mascote, infantil, excesso de cores, visual generico">
+            </label>
+          </div>
+        </div>
+
+        <div class="briefing-panel">
+          <p class="eyebrow">02 / Cores</p>
+          <div class="color-builder" data-color-builder>
+            <div class="color-list" data-color-list></div>
+            <button class="briefing-icon-button" type="button" data-add-color aria-label="Adicionar cor">+</button>
+          </div>
+        </div>
+
+        <div class="briefing-panel">
+          <p class="eyebrow">03 / Refer&ecirc;ncias</p>
+          <div class="reference-upload">
+            <label>
+              <span>At&eacute; 3 modelos de logo que a pessoa gosta</span>
+              <input name="references" type="file" accept="image/*" multiple data-reference-input>
+            </label>
+            <div class="reference-preview" data-reference-preview>
+              <div>REF 01</div>
+              <div>REF 02</div>
+              <div>REF 03</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="briefing-panel">
+          <p class="eyebrow">04 / Uso e entrega</p>
+          <div class="briefing-grid">
+            <label>
+              <span>Onde o logo vai aparecer?</span>
+              <input name="usage" type="text" placeholder="Ex: site, fachada, Instagram, uniforme, app">
+            </label>
+            <label>
+              <span>Prazo ideal</span>
+              <input name="deadline" type="text" placeholder="Ex: 15 dias, urgente, sem pressa">
+            </label>
+            <label class="briefing-wide">
+              <span>Observa&ccedil;&otilde;es finais</span>
+              <textarea name="notes" rows="4" placeholder="Qualquer detalhe que ajude a Gaijin a entender melhor a missao."></textarea>
+            </label>
+          </div>
+        </div>
+
+        <div class="briefing-actions">
+          <button class="button magnetic" type="button" data-generate-briefing>Gerar briefing PDF</button>
+          <a class="button button-ghost magnetic" data-whatsapp-briefing href="https://wa.me/5561996067198" target="_blank" rel="noreferrer">Enviar no WhatsApp</a>
+        </div>
+      </form>
+
+      <aside class="briefing-preview-shell">
+        <div class="briefing-preview" data-briefing-preview>
+          <div class="pdf-cover">
+            <p>GAIJIN CREATIVE / LOGO BRIEFING</p>
+            <h2 data-preview-brand>Marca sem nome</h2>
+            <span data-preview-tagline>Briefing visual em constru&ccedil;&atilde;o</span>
+          </div>
+          <div class="pdf-section">
+            <small>CONCEITO</small>
+            <p data-preview-idea>Preencha os campos para gerar uma leitura clara da ideia do logo.</p>
+          </div>
+          <div class="pdf-section pdf-grid">
+            <div><small>SEGMENTO</small><strong data-preview-area>-</strong></div>
+            <div><small>P&Uacute;BLICO</small><strong data-preview-audience>-</strong></div>
+            <div><small>ESTILO</small><strong data-preview-personality>-</strong></div>
+            <div><small>USO</small><strong data-preview-usage>-</strong></div>
+          </div>
+          <div class="pdf-section">
+            <small>PALETA DESEJADA</small>
+            <div class="pdf-palette" data-preview-palette></div>
+          </div>
+          <div class="pdf-section">
+            <small>REFER&Ecirc;NCIAS VISUAIS</small>
+            <div class="pdf-reference-grid" data-preview-references></div>
+          </div>
+          <div class="pdf-section">
+            <small>DIRE&Ccedil;&Atilde;O T&Eacute;CNICA</small>
+            <ul data-preview-technical>
+              <li>Definir vers&otilde;es horizontal, vertical, reduzida e monocrom&aacute;tica.</li>
+              <li>Testar leitura em favicon, avatar, mobile e fundos escuros.</li>
+              <li>Preparar aplica&ccedil;&otilde;es para site, redes sociais e materiais comerciais.</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+  <script src="briefing.js" defer></script>
+</body>
+</html>

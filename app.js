@@ -523,6 +523,34 @@ function updateBrief() {
   whatsappLink.href = `https://wa.me/5561996067198?text=${encodeURIComponent(`Oi, quero iniciar um projeto: ${readable}`)}`;
 }
 
+Object.assign(intensityMap, {
+  1: "ousadia controlada",
+  2: "ousadia marcante",
+  3: "alta ousadia",
+});
+
+Object.assign(speedMap, {
+  1: "refinamento simples",
+  2: "refinamento equilibrado",
+  3: "refinamento premium",
+});
+
+updateBrief = function () {
+  const data = new FormData(briefForm);
+  const kind = data.get("kind") || "Logo minimalista e premium";
+  const brandName = data.get("brandName") || "marca ainda sem nome";
+  const businessArea = data.get("businessArea") || "segmento a definir";
+  const logoIdea = data.get("logoIdea") || "ideia ainda em aberto";
+  const audience = data.get("audience") || "publico a definir";
+  const colors = data.get("colors") || "cores em aberto";
+  const avoid = data.get("avoid") || "nada especificado";
+  const intensity = intensityMap[data.get("intensity")] || intensityMap[3];
+  const speed = speedMap[data.get("speed")] || speedMap[2];
+  const readable = `Briefing de logo para ${brandName}: ${kind}, ${intensity} e ${speed}. Segmento: ${businessArea}. Ideia: ${logoIdea}. Publico: ${audience}. Cores: ${colors}. Evitar: ${avoid}.`;
+  briefLine.textContent = readable;
+  whatsappLink.href = `https://wa.me/5561996067198?text=${encodeURIComponent(`Oi, quero criar um logo com a Gaijin. ${readable}`)}`;
+};
+
 briefForm.addEventListener("input", updateBrief);
 updateBrief();
 
@@ -564,11 +592,12 @@ function renderAiResult(result) {
 function getAiContext(extra = {}) {
   const aiData = Object.fromEntries(new FormData(aiForm).entries());
   const briefData = Object.fromEntries(new FormData(briefForm).entries());
+  const briefNotes = briefLine.textContent || "";
   return {
-    business: aiData.business || "",
-    goal: aiData.goal || `${briefData.kind || "Projeto"} com intensidade ${briefData.intensity || "3"}`,
-    vibe: aiData.vibe || "cinematografica, tecnologica e memoravel",
-    notes: aiData.notes || briefLine.textContent || "",
+    business: aiData.business || briefData.brandName || "",
+    goal: aiData.goal || `criar logo para ${briefData.businessArea || "marca"} com estilo ${briefData.kind || "minimalista"}`,
+    vibe: aiData.vibe || `${briefData.kind || "minimalista"}, cinematografica, tecnologica e memoravel`,
+    notes: aiData.notes || briefNotes,
     ...extra,
   };
 }

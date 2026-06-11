@@ -56,7 +56,7 @@
       <a href="#reactor">Reator</a>
       <a href="#work">Arquivo</a>
       <a href="#method">Ritual</a>
-      <a href="#brief">Launch</a>
+      <a href="briefing.html">Briefing</a>
       <a href="#contact">Contato</a>
     </nav>
   </header>
@@ -78,7 +78,7 @@
           </h1>
           <p class="hero-text">Criamos identidades, sites e experi&ecirc;ncias digitais com atmosfera, movimento, contraste e precis&atilde;o para transformar aten&ccedil;&atilde;o em desejo.</p>
           <div class="hero-actions">
-            <a class="button magnetic" href="#brief">Abrir launchpad</a>
+            <a class="button magnetic" href="briefing.html">Abrir briefing</a>
             <a class="button button-ghost magnetic" href="#work">Entrar no arquivo</a>
           </div>
         </div>
@@ -269,36 +269,62 @@
       </div>
     </section>
 
-    <section id="brief" class="launch scene" data-scene="04" data-label="Launch">
+    <section id="brief" class="launch scene" data-scene="04" data-label="Briefing">
       <div class="section-head reveal">
-        <p class="eyebrow">Cena 04 / Launchpad</p>
-        <h2>Configure a miss&atilde;o antes do contato.</h2>
+        <p class="eyebrow">Cena 04 / Briefing de logo</p>
+        <h2>Transforme a ideia do logo em dire&ccedil;&atilde;o criativa.</h2>
       </div>
       <form class="launch-console reveal" data-brief-form>
-        <div class="choice-row" role="group" aria-label="Tipo de projeto">
-          <label><input type="radio" name="kind" value="Site cinematogr&aacute;fico" checked><span>Site cinema</span></label>
-          <label><input type="radio" name="kind" value="Identidade completa"><span>Identidade</span></label>
-          <label><input type="radio" name="kind" value="Experi&ecirc;ncia completa"><span>Experi&ecirc;ncia total</span></label>
+        <div class="brief-fields">
+          <label>
+            <span>Nome da marca</span>
+            <input name="brandName" type="text" placeholder="Ex: Gaijin Creative">
+          </label>
+          <label>
+            <span>Segmento</span>
+            <input name="businessArea" type="text" placeholder="Ex: tecnologia, cl&iacute;nica, moda, igreja">
+          </label>
+          <label class="brief-wide">
+            <span>Ideia central do logo</span>
+            <textarea name="logoIdea" rows="4" placeholder="Conte o que o logo precisa representar, quais s&iacute;mbolos voc&ecirc; imagina, hist&oacute;ria da marca ou sensa&ccedil;&atilde;o desejada."></textarea>
+          </label>
+          <label>
+            <span>P&uacute;blico</span>
+            <input name="audience" type="text" placeholder="Ex: empres&aacute;rios, jovens, fam&iacute;lias, p&uacute;blico premium">
+          </label>
+          <label>
+            <span>Cores desejadas</span>
+            <input name="colors" type="text" placeholder="Ex: preto, verde &aacute;cido, dourado">
+          </label>
+          <label class="brief-wide">
+            <span>O que evitar</span>
+            <input name="avoid" type="text" placeholder="Ex: clich&ecirc;, infantil, gen&eacute;rico, muito colorido">
+          </label>
+        </div>
+        <div class="choice-row logo-style-row" role="group" aria-label="Estilo do logo">
+          <label><input type="radio" name="kind" value="Logo minimalista e premium" checked><span>Minimalista</span></label>
+          <label><input type="radio" name="kind" value="Logo futurista e tecnol&oacute;gico"><span>Futurista</span></label>
+          <label><input type="radio" name="kind" value="Logo simb&oacute;lico e memor&aacute;vel"><span>Simb&oacute;lico</span></label>
         </div>
         <label class="range-field">
-          <span>Intensidade visual</span>
+          <span>Ousadia visual</span>
           <input type="range" name="intensity" min="1" max="3" value="3">
         </label>
         <label class="range-field">
-          <span>Velocidade de lan&ccedil;amento</span>
+          <span>N&iacute;vel de refinamento</span>
           <input type="range" name="speed" min="1" max="3" value="2">
         </label>
         <div class="launch-output" data-tilt>
-          <p data-brief-line>Site cinematogr&aacute;fico com intensidade m&aacute;xima e ritmo equilibrado.</p>
-          <button class="button magnetic" type="button" data-launch-sequence>Transmitir brief</button>
+          <p data-brief-line>Briefing de logo minimalista e premium com alta ousadia e refinamento equilibrado.</p>
+          <button class="button magnetic" type="button" data-launch-sequence>Enviar briefing</button>
           <a class="stealth-link" data-whatsapp-link href="https://wa.me/5561996067198" target="_blank" rel="noreferrer">Abrir WhatsApp</a>
         </div>
       </form>
       <div class="ai-console reveal" data-ai-console>
         <div class="ai-copy">
-          <p class="eyebrow">IA / Diagn&oacute;stico de marca</p>
-          <h3>Transforme uma ideia solta em dire&ccedil;&atilde;o criativa.</h3>
-          <p>Descreva o projeto e a IA monta um diagn&oacute;stico, uma dire&ccedil;&atilde;o visual e uma mensagem pronta para enviar.</p>
+          <p class="eyebrow">IA / Dire&ccedil;&atilde;o de marca</p>
+          <h3>Use a IA para lapidar o briefing antes de enviar.</h3>
+          <p>Complete com contexto extra e gere diagn&oacute;stico, dire&ccedil;&atilde;o visual e mensagem pronta.</p>
         </div>
         <form class="ai-form" data-ai-form>
           <label>
@@ -401,7 +427,7 @@
   <div class="launch-sequence" data-launch-overlay aria-hidden="true">
     <div class="launch-core">
       <span data-launch-count>03</span>
-      <p>Transmitindo brief para a Gaijin</p>
+      <p>Transmitindo briefing para a Gaijin</p>
     </div>
   </div>
 
